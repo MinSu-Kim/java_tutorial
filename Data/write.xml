@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<class>
+	<student rollno="500">
+		<firstname>Kim</firstname>
+		<lastname>minsu</lastname>
+		<nickname>teacher</nickname>
+		<marks>99</marks>
+	</student>
+</class>
