@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class Server extends Thread {
 	public static final int PORT = 12345;
+	public static final String HOST = "localhost";
+	
 	private Map<String, DataOutputStream> mClients;
 	private ServerSocket ss;
 	

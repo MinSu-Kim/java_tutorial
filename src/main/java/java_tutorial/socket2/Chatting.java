@@ -4,14 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -28,7 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class Chatting extends JFrame implements ActionListener, Runnable {
-
+	
 	private JPanel contentPane;
 	private JTextField tFNickName;
 	private JTextField tFTalk;
@@ -127,24 +122,22 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 		btnSend = new JButton("Àü¼Û");
 		btnSend.addActionListener(this);
 		pSouth.add(btnSend, BorderLayout.EAST);
-		
-
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnClose) {
-			actionPerformedBtnClose(e);
-		}
 		if (e.getSource() == btnConnect || e.getSource() == tFNickName) {
 			actionPerformedBtnConnect(e);
 		}
 		if (e.getSource() == btnSend || e.getSource() == tFTalk) {
 			actionPerformedBtnSend(e);
 		}
+		if (e.getSource() == btnClose) {
+			actionPerformedBtnClose(e);
+		}
 	}
 
 	private void connectServer() throws UnknownHostException, IOException {
-		soc = new Socket("localhost", Server.PORT);
+		soc = new Socket(Server.HOST, Server.PORT);
 		dos = new DataOutputStream(soc.getOutputStream());
 		dis = new DataInputStream(soc.getInputStream());
 	}
@@ -159,25 +152,23 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 			String msg = null;
 			try {
 				msg = dis.readUTF();
+				if (msg.startsWith("cnt")) {
+					String cnt = msg.split(":")[1];
+					lblCnt.setText(cnt);
+					continue;
+				}
+				if (msg.startsWith("list")) {
+					msg = msg.split(":")[1];
+					for(String element : msg.split(",")) {
+						model.addElement(element);
+					}
+					continue;
+				}
 				tAView.append(msg+ "\n");
 			} catch (IOException e) {
 				break;
 			} 	
 		}
-	}
-	
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Chatting frame = new Chatting();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 	
 	protected void actionPerformedBtnSend(ActionEvent e) {
@@ -223,4 +214,17 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 		}
 	}
 	
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Chatting frame = new Chatting();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }
