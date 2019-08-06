@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,11 +20,11 @@ public class ServerThread extends Thread {
 	private String nickName;
 	private DataInputStream br;
 	
-	public ServerThread(Socket clientSocket, Map<String, DataOutputStream> mClients, String nickName) {
+	public ServerThread(Socket clientSocket, Map<String, DataOutputStream> mClients, List<String> nickNames, String nickName) {
 		this.clientSocket = clientSocket;
 		this.mClients = mClients;
 		this.nickName = nickName;
-		this.nickNames = new ArrayList<String>();
+		this.nickNames = nickNames;
 	}
 	
 	@Override
@@ -33,18 +32,15 @@ public class ServerThread extends Thread {
 		try {
 			br = new DataInputStream(clientSocket.getInputStream());
 			clientKey = nickName + clientSocket.getInetAddress().toString();
+			
 			bw = new DataOutputStream(clientSocket.getOutputStream());
 			mClients.put(clientKey, bw);
 			nickNames.add(nickName);
 			
 			sendBroadCast("cnt:" + mClients.size());
+			System.out.println("cnt:" + mClients.size() + " size " + nickNames.size());
 			
-			StringBuilder sb = new StringBuilder();
-			for(String s : nickNames) {
-				sb.append(s + ",");
-			}
-			sb.replace(sb.length()-1, sb.length(), "");
-			sendBroadCast("list:" + sb.toString());
+			sendList();
 			
 			System.out.println(clientKey + " : " + clientSocket + "[" + nickName + "] ´Ô Á¢¼Ó");
 			
@@ -55,7 +51,10 @@ public class ServerThread extends Thread {
 					if (!msg.toLowerCase().equals("exit")) {
 						sendBroadCast("[" + nickName + "]" + msg);
 					}else {
-						sendBroadCast("[" + nickName + "]´ÔÀÌ ³ª°¡¼Ì½À´Ï´Ù.");
+						sendBroadCast(String.format("%s ´ÔÀÌ ³ª°¡¼Ì½À´Ï´Ù", nickName));
+						nickNames.remove(nickName);
+						mClients.remove(clientKey);
+						sendList();
 						break;
 					}
 				}catch(EOFException e) {
@@ -73,6 +72,16 @@ public class ServerThread extends Thread {
 			}catch (IOException e) {
 			}
 		}
+	}
+
+	private void sendList() {
+		StringBuilder sb = new StringBuilder();
+		for(String s : nickNames) {
+			sb.append(s + ",");
+		}
+		sb.replace(sb.length()-1, sb.length(), "");
+		System.out.println(sb);
+		sendBroadCast("list:" + sb.toString());
 	}
 
 	private void sendBroadCast(String msg) {

@@ -158,6 +158,7 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 					continue;
 				}
 				if (msg.startsWith("list")) {
+					model.removeAllElements();
 					msg = msg.split(":")[1];
 					for(String element : msg.split(",")) {
 						model.addElement(element);
@@ -182,8 +183,8 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 	}
 	
 	protected void actionPerformedBtnConnect(ActionEvent e) {
-		String str = tFNickName.getText().trim();
-		if (str==null||str.length()==0){
+		String nickName = tFNickName.getText().trim();
+		if (nickName==null||nickName.length()==0){
 			tFNickName.setText("");
 			tFNickName.requestFocus();
 			tAView.setText("대화명을 적으세요");
@@ -192,7 +193,9 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 			
 		try {
 			connectServer();
-			dos.writeUTF(str);
+			dos.writeUTF(nickName);
+			setTitle(nickName);
+
 			currentTh = new Thread(this);
 			currentTh.start();
 		} catch (UnknownHostException e1) {
@@ -214,13 +217,16 @@ public class Chatting extends JFrame implements ActionListener, Runnable {
 		}
 	}
 	
-	
+
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+	
 					Chatting frame = new Chatting();
 					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

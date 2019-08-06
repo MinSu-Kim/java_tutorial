@@ -86,6 +86,7 @@ public class Json_Main {
 	}
 
 	private static void make_simple_json() {
+		System.out.println("make_simple_json()");
 		Gson gson = new Gson();
 		JsonObject object = new JsonObject();
 		object.addProperty("name", "park");
