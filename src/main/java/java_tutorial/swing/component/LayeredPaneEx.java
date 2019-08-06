@@ -42,11 +42,8 @@ public class LayeredPaneEx extends JFrame {
 		bottom.setBounds(60, 60, 50, 50);
 		
 		// adding buttons on pane
-		pane.add(bottom, 1);
+    	pane.add(bottom, 1);
 		pane.add(middle, 2);
-		pane.add(top, 3);
-		pane.add(bottom, 1);
-		pane.add(middle,2);
 		pane.add(top, 3);
 	}
 
