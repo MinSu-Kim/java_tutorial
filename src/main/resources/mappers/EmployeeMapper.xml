@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.yi.gradle_mybatis_c3p0_teacher.dao.EmployeeDao">
+
+	<resultMap type="Employee" id="empResult">
+		<id column="eno" property="eNo"/>
+		<result column="ename" property="eName"/>
+		<result column="salary" property="salary"/>
+		<result column="dept_code" property="dno.deptCode"/>
+		<result column="dept_name" property="dno.deptName"/>
+		<result column="floor" property="dno.floor"/>
+		<result column="gender" property="gender"/>
+		<result column="joindate" property="joinDate"/>
+		<result column="title_code" property="title.titleCode"/>
+		<result column="title_name" property="title.titleName"/>
+	</resultMap>
+
+	<select id="selectEmployeeByAll" resultMap="empResult">
+		select eno, ename, salary, dept_code, dept_name, floor, gender, joindate, title_code, title_name 
+		from employee e join department d on e.dno = d.dept_code
+     		 join title t on e.title = t.title_code;
+	</select>
+	
+	<update id="updateEmployee" parameterType="Employee">
+		UPDATE employee
+		SET ename=#{eName}, 
+		    salary=#{salary}, 
+		    dno=#{dno.deptCode}, 
+		    gender=#{gender}, 
+			joindate=#{joinDate}, 
+			title=#{title.titleCode}
+		WHERE eno=#{eNo};
+	</update>
+	
+	<insert id="insertEmployee" parameterType="Employee">
+		INSERT INTO employee (eno, ename, salary, dno, gender, joindate, title) 
+		VALUES(#{eNo}, #{eName}, #{salary}, #{dno.deptCode}, #{gender}, #{joinDate}, #{title.titleCode});
+	
+	</insert>
+	
+	<delete id="deleteEmployee" parameterType="Employee">
+		delete from employee where eno = #{eNo}
+	</delete>
+	
+	<select id="selectEmployeeByCode" parameterType="Employee" resultMap="empResult">
+		select eno, ename, salary, dept_code, dept_name, floor, gender, joindate, title_code, title_name 
+		from employee e join department d on e.dno = d.dept_code
+     		 join title t on e.title = t.title_code
+     	where eno = #{eNo};
+	</select>
+	
+	<select id="getSalaryByDepartment" 
+	        statementType="CALLABLE" parameterType="map" resultType="State">
+		{ call salary_total(#{deptno, mode=IN, jdbcType=INTEGER})}
+	</select>
+	
+	<select id="getStateSalaryByDepartment" 
+	        statementType="CALLABLE" parameterType="map" resultType="State">
+		{ call salary_total(#{deptno, mode=IN, jdbcType=INTEGER})}        
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

@@ -6,13 +6,13 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 	<typeAliases>
-		<package name="java_tutorial.json.socket.dto"/>
+		<package name="java_tutorial.parser.json.socket.dto"/>
 	</typeAliases>
 	
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC"/>
-			<dataSource type="java_tutorial.json.socket.jdbc.C3P0DataSourceFactory">
+			<dataSource type="java_tutorial.parser.json.socket.jdbc.C3P0DataSourceFactory">
 				<property name="driver" value="${driver}"/>
 				<property name="url" value="${url}"/>
 				<property name="username" value="${username}"/>
@@ -22,6 +22,9 @@
 	</environments>
 	
 	<mappers>
+		<mapper resource="mappers/TitleMapper.xml"/>
+		<mapper resource="mappers/DepartmentMapper.xml"/>
+		<mapper resource="mappers/EmployeeMapper.xml"/>
 	</mappers>
 	
 </configuration>

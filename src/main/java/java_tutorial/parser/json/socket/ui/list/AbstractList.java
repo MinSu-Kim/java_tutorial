@@ -26,7 +26,7 @@ public abstract class AbstractList<T> extends JPanel {
 	}
 
 	private void initComponents(String title) {
-		setBorder(new TitledBorder(null, title + "Î™©Î°ù", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, title + "∏Ò∑œ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
@@ -47,7 +47,7 @@ public abstract class AbstractList<T> extends JPanel {
 	}
 
 	public void reloadData() {
-		table.setModel(new DefaultTableModel(getRows(), getColumnNames()));
+		table.setModel(new MyTableModel(getRows(), getColumnNames()));
 		tableAlignmentAndWidth();
 	}
 
@@ -62,13 +62,8 @@ public abstract class AbstractList<T> extends JPanel {
 		return rows;
 	}
 
-	protected abstract void tableAlignmentAndWidth();
 
-	protected abstract Object[] toArray(int idx);
-
-	protected abstract String[] getColumnNames();
 	
-	// ?Öå?ù¥Î∏? ?? ?Ç¥?ö©?ùò ?†ï?†¨
 	protected void tableCellAlignment(int align, int... idx) {
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
 		dtcr.setHorizontalAlignment(align);
@@ -79,7 +74,6 @@ public abstract class AbstractList<T> extends JPanel {
 		}
 	}
 
-	// ?Öå?ù¥Î∏? ???ùò ?è≠ ?Ñ§?†ï
 	protected void tableSetWidth(int... width) {
 		TableColumnModel cModel = table.getColumnModel();
 
@@ -95,11 +89,27 @@ public abstract class AbstractList<T> extends JPanel {
 			return item;
 		}
 		if (i < 0 || i > table.getModel().getRowCount() - 1) {
-			JOptionPane.showMessageDialog(null, "?Ñ†?Éù?êú Î∂??ÑúÍ∞? ?óÜ?äµ?ãà?ã§.");
+			JOptionPane.showMessageDialog(null, "«ÿ¥Á ¡˜√•¿ª º±≈√«œººø‰");
 			return item;
 		}
 
 		item = itemList.get(i);
 		return item;
 	}
+	
+	private class MyTableModel extends DefaultTableModel {
+
+		public MyTableModel(Object[][] data, Object[] columnNames) {
+			super(data, columnNames);
+		}
+
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	}
+	
+	protected abstract void tableAlignmentAndWidth();
+	protected abstract Object[] toArray(int idx);
+	protected abstract String[] getColumnNames();
 }

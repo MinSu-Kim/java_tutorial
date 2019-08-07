@@ -32,7 +32,7 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 		initComponents(title);
 	}
 
-	protected abstract void initDao();
+
 
 	private void initComponents(String title) {
 		setTitle(title);
@@ -48,11 +48,11 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 		JPanel pBtns = new JPanel();
 		pMain.add(pBtns, BorderLayout.SOUTH);
 
-		btnAdd = new JButton("ì¶”ê?");
+		btnAdd = new JButton("Ãß°¡");
 		btnAdd.addActionListener(this);
 		pBtns.add(btnAdd);
 
-		btnCancel = new JButton("ì·¨ì†Œ");
+		btnCancel = new JButton("Ãë¼Ò");
 		btnCancel.addActionListener(this);
 		pBtns.add(btnCancel);
 
@@ -61,11 +61,11 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 
 		popupMenu = new JPopupMenu();
 
-		mntmUpdate = new JMenuItem("?ˆ˜? •");
+		mntmUpdate = new JMenuItem("¼öÁ¤");
 		mntmUpdate.addActionListener(this);
 		popupMenu.add(mntmUpdate);
 
-		mntmDelete = new JMenuItem("?‚­? œ");
+		mntmDelete = new JMenuItem("»èÁ¦");
 		mntmDelete.addActionListener(this);
 		popupMenu.add(mntmDelete);
 
@@ -86,10 +86,10 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 			actionPerformedBtnCancel(e);
 		}
 		if (e.getSource() == btnAdd) {
-			if (e.getActionCommand().equals("ì¶”ê?")) {
+			if (e.getActionCommand().equals("Ãß°¡")) {
 				actionPerformedBtnAdd(e);
 			}
-			if (e.getActionCommand().equals("?ˆ˜? •")) {
+			if (e.getActionCommand().equals("¼öÁ¤")) {
 				actionPerformedBtnUpdate(e);
 			}
 		}
@@ -102,7 +102,7 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 	}
 
 	private void refreshUI(T item, int res) {
-		String message = res == 1 ? "?„±ê³?" : "?‹¤?Œ¨";
+		String message = res == 1 ? "¼º°ø" : "½ÇÆÐ";
 		JOptionPane.showMessageDialog(null, item + message);
 		reloadList();
 		clearContent();
@@ -112,13 +112,13 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 		T updateDept = pContent.getItem();
 		int res =updateItem(updateDept);
 		refreshUI(updateDept, res);
-		btnAdd.setText("ì¶”ê?");
+		btnAdd.setText("¼öÁ¤");
 	}
 	
 	private void actionPerformedMntmUpdate(ActionEvent e) {
 		T updateDept = pList.getSelectedItem();
 		pContent.setItem(updateDept);
-		btnAdd.setText("?ˆ˜? •");
+		btnAdd.setText("Ãß°¡");
 	}
 
 	private void actionPerformedMntmDelete(ActionEvent e) {
@@ -145,5 +145,5 @@ public abstract class AbstractFrameUI<T> extends JFrame implements ActionListene
 	protected abstract void clearContent();
 	protected abstract int deleteItem(T item);
 	protected abstract int insertItem(T item);
-
+	protected abstract void initDao();
 }
