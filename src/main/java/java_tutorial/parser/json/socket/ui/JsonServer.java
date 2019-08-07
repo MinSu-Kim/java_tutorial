@@ -12,7 +12,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java_tutorial.parser.json.Person;
 import java_tutorial.parser.json.socket.dao.TitleDao;
 import java_tutorial.parser.json.socket.dao.TitleDaoImpl;
 import java_tutorial.parser.json.socket.dto.Title;
@@ -26,26 +25,25 @@ public class JsonServer {
 	private DataInputStream in;
 	private DataOutputStream out;
 	private TitleDao dao;
-	
+
 	public static void main(String[] args) throws Exception {
 		new JsonServer();
 	}
 
-	
 	public JsonServer() {
 		dao = new TitleDaoImpl();
 		setupConnection();
+		
 		Receiver receiver = new Receiver();
 		Thread th = new Thread(receiver); // 상대로부터 메시지 수신을 위한 스레드 생성
 		th.start();
 //		serverSocket.close();
 	}
 
-
 	private void setupConnection() {
 		try {
 			serverSocket = new ServerSocket(PORT); // 서버 소켓 생성
-			System.out.println("Server Ready~~");
+			System.out.println("Server Ready " + serverSocket);
 			socket = serverSocket.accept(); // 클라이언트로부터 연결 요청 대기
 			System.out.println("Client Request " + socket);
 			in = new DataInputStream(socket.getInputStream()); // 클라이언트로부터의 입력 스트림
@@ -54,40 +52,44 @@ public class JsonServer {
 			e.printStackTrace();
 		} // 클라이언트 소켓 생성
 	}
-	
+
 	private class Receiver implements Runnable {
 		Gson gson = new Gson();
+
 		@Override
 		public void run() {
 			String msg = null;
-			Messenger rep = null;
+			MessengerTitle rep = null;
 			try {
-				while ((msg = in.readUTF())!= null) {
-					rep = gson.fromJson(msg, Messenger.class);
-					Title newTitle;
-					int res;
-					switch (rep.getMsg()) {
-					case "insert":
-						newTitle = rep.getTitle();
-						res = dao.insertTitle(newTitle);
-						replyResult(res, "insert");
-						break;
-					case "delete":
-						newTitle = rep.getTitle();
-						res = dao.deleteTitle(newTitle);
-						replyResult(res, "delete");
-						break;
-					case "update":
-						newTitle = rep.getTitle();
-						res = dao.updateTitle(newTitle);
-						replyResult(res, "update");
-						break;
-					case "listAll":
-						List<Title> list = dao.selectTitleByAll();
-						replyResult(list, "listAll");
-						break;
-					default:
-						break;
+				while (true) {
+					msg = in.readUTF();
+					if (msg != null) {
+						rep = gson.fromJson(msg, MessengerTitle.class);
+						Title newTitle;
+						int res;
+						switch (rep.getMsg()) {
+						case TITLE_INSERT:
+							newTitle = rep.getTitle();
+							res = dao.insertTitle(newTitle);
+							replyResult(res, TitleCRUD.TITLE_INSERT);
+							break;
+						case TITLE_DELETE:
+							newTitle = rep.getTitle();
+							res = dao.deleteTitle(newTitle);
+							replyResult(res, TitleCRUD.TITLE_DELETE);
+							break;
+						case TITLE_UPDATE:
+							newTitle = rep.getTitle();
+							res = dao.updateTitle(newTitle);
+							replyResult(res, TitleCRUD.TITLE_UPDATE);
+							break;
+						case TITLE_LIST:
+							List<Title> list = dao.selectTitleByAll();
+							replyResult(list, TitleCRUD.TITLE_LIST);
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			} catch (SocketException e) {
@@ -97,13 +99,13 @@ public class JsonServer {
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(1);
-			} 
+			}
 		}
 	}
-	
-	private void replyResult(int res, String msg) {
+
+	private void replyResult(int res, TitleCRUD msg) {
 		Gson gson = new Gson();
-		Reply messenger = new Reply(msg, res);
+		ReplyTitle messenger = new ReplyTitle(msg, res);
 		String repl = gson.toJson(messenger);
 		System.out.println(repl);
 		try {
@@ -113,19 +115,18 @@ public class JsonServer {
 		}
 	}
 
-
-	public void replyResult(List<Title> list, String msg) {
+	public void replyResult(List<Title> list, TitleCRUD msg) {
 		Gson gson = new Gson();
-		String listToJson = gson.toJson(list, new TypeToken<List<Title>>(){}.getType());
-		
-		Reply messenger = new Reply(msg, listToJson);
+		String listToJson = gson.toJson(list, new TypeToken<List<Title>>() {}.getType());
+
+		ReplyTitle messenger = new ReplyTitle(msg, listToJson);
 		String repl = gson.toJson(messenger);
 		System.out.println(repl);
 		try {
 			out.writeUTF(repl);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 }

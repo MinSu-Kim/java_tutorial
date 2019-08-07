@@ -3,6 +3,7 @@ package java_tutorial.parser.json.socket.ui.content;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
@@ -10,16 +11,15 @@ import javax.swing.border.TitledBorder;
 import java_tutorial.parser.json.socket.dto.Department;
 
 @SuppressWarnings("serial")
-public class PanelDepartment extends AbstractPanel<Department> {
+public class PanelDepartment extends JPanel {
 	private JTextField tfDeptNo;
 	private JTextField tfDeptName;
 	private JTextField tfFloor;
 
 	public PanelDepartment(String title) {
-		super(title);
+		initComponents(title);
 	}
 
-	@Override
 	protected void initComponents(String title) {
 		setBorder(new TitledBorder(null, title + " ? •ë³?", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new GridLayout(0, 2, 10, 10));

@@ -23,7 +23,7 @@ public class TitleList extends JPanel {
 	private JTable table;
 	protected List<Title> itemList;
 	private JScrollPane scrollPane;
-
+	
 	public TitleList(String title) {
 		initComponents(title);
 	}
@@ -36,7 +36,7 @@ public class TitleList extends JPanel {
 		add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		table.setPreferredScrollableViewportSize(new Dimension(500, 200));
 		scrollPane.setViewportView(table);
 	}
 
@@ -65,8 +65,6 @@ public class TitleList extends JPanel {
 		return rows;
 	}
 
-
-	
 	protected void tableCellAlignment(int align, int... idx) {
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
 		dtcr.setHorizontalAlignment(align);

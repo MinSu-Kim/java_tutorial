@@ -1,25 +1,19 @@
 package java_tutorial.parser.json.socket.ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java_tutorial.parser.json.socket.dto.Title;
 import java_tutorial.parser.json.socket.ui.content.PanelTitle;
@@ -29,47 +23,28 @@ import java_tutorial.parser.json.socket.ui.list.TitleList;
 public class TitleFrameUI extends JFrame implements ActionListener {
 	private JButton btnAdd;
 	protected PanelTitle pContent;
-	protected List<Title> itemList;
 	protected TitleList pList;
 	private JButton btnCancel;
-	private int nextNo;
-	
+
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmUpdate;
 	private JMenuItem mntmDelete;
 
-	private DataInputStream in;
 	private DataOutputStream out;
-	private Socket socket;
-	
+	private List<Title> itemList;
+
+	public void setTitleList(List<Title> itemList) {
+		this.itemList = itemList;
+	}
+
+	public void setOut(DataOutputStream out) {
+		this.out = out;
+	}
+
 	public TitleFrameUI(String title) {
-		setupConnection();
-	
-//		itemList = new ArrayList<Title>();
 		initComponents(title);
-		
-		Receiver receiver = new Receiver();
-		Thread th = new Thread(receiver); // 상대로부터 메시지 수신을 위한 스레드 생성
-		th.start();
-		
-		new Thread(()->{
-			sendMessage(null, "listAll");
-		}).start();
 	}
-	
-	private void setupConnection() {
-		try {
-			socket = new Socket("localhost", 12345);
-			in = new DataInputStream(socket.getInputStream()); // 클라이언트로부터의 입력 스트림
-			out = new DataOutputStream(socket.getOutputStream()); // 클라이언트로의 출력 스트림
-		} catch (IOException e) {
-			System.err.println("Server가 동작하지 않습니다. Server를 확인하세요.");
-//			e.printStackTrace();
-			System.exit(-1);
-		} // 클라이언트 소켓 생성
-	
-	}
-	
+
 	private void initComponents(String title) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle(title);
@@ -129,7 +104,11 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		}
 	}
 
-	private void refreshUI() {
+	protected void clearContent() {
+		pContent.clearComponent(itemList.size() == 0 ? 1 : itemList.size() + 1);
+	}
+	
+	public void refreshUI() {
 		pList.setItemList(itemList);
 		pList.reloadData();
 		clearContent();
@@ -137,7 +116,7 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 
 	private void actionPerformedBtnUpdate(ActionEvent e) {
 		Title title = pContent.getItem();
-		sendMessage(title, "update");
+		sendMessage(title, TitleCRUD.TITLE_UPDATE);
 		btnAdd.setText("추가");
 	}
 
@@ -149,12 +128,17 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 
 	private void actionPerformedMntmDelete(ActionEvent e) {
 		Title delDept = pList.getSelectedItem();
-		sendMessage(delDept, "delete");
+		sendMessage(delDept, TitleCRUD.TITLE_DELETE);
 	}
 
-	private void sendMessage(Title title, String msg) {
+	protected void actionPerformedBtnAdd(ActionEvent e) {
+		Title title = pContent.getItem();
+		sendMessage(title, TitleCRUD.TITLE_INSERT);
+	}
+
+	private void sendMessage(Title title, TitleCRUD msg) {
 		Gson gson = new Gson();
-		Messenger messenger = new Messenger(msg, title);
+		MessengerTitle messenger = new MessengerTitle(title, msg);
 		String json = gson.toJson(messenger);
 		System.out.println(json);
 		try {
@@ -164,66 +148,8 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		}
 	}
 
-	protected void actionPerformedBtnAdd(ActionEvent e) {
-		Title title = pContent.getItem();
-		sendMessage(title, "insert");
-	}
-	
-	private class Receiver implements Runnable {
-		Gson gson = new Gson();
-		String msg;
-		Reply rep;
-		
-		@Override
-		public void run() {
-			try {
-				while ((msg = in.readUTF())!= null) {
-					rep = gson.fromJson(msg, Reply.class);
-					if (rep.getMsg().equals("listAll")){
-						JOptionPane.showMessageDialog(null, "listAll - 성공");
-						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Title>>(){}.getType());
-						pList.setItemList(itemList);
-						pList.reloadData();
-					}
-					if (rep.getRes() == 1) {
-						JOptionPane.showMessageDialog(null, rep.getMsg() + "성공");
-						refreshUI();
-					}
-					
-				}
-			} catch (EOFException e) {
-				// TODO: handle exception
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-				System.exit(1);
-			} 
-		}
-	}
-	
 	protected void actionPerformedBtnCancel(ActionEvent e) {
 		clearContent();
-	}
-
-	protected void clearContent() {
-		pContent.clearComponent(itemList.size());
-	}
-
-	public void getListAll() {
-		sendMessage(null, "listAll");
-	}
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TitleFrameUI frame = new TitleFrameUI("직책관리");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 }

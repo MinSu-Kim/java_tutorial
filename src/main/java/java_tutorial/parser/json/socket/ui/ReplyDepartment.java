@@ -1,20 +1,16 @@
 package java_tutorial.parser.json.socket.ui;
 
-import java.util.List;
-
-import java_tutorial.parser.json.socket.dto.Title;
-
-public class Reply {
-	private String msg;
+public class ReplyDepartment {
+	private DepartmentCRUD msg;
 	private int res;
 	private String strToJson;
 
-	public Reply(String msg, String strToJson) {
+	public ReplyDepartment(DepartmentCRUD msg, String strToJson) {
 		this.msg = msg;
 		this.strToJson = strToJson;
 	}
 
-	public Reply(String msg, int res) {
+	public ReplyDepartment(DepartmentCRUD msg, int res) {
 		this.msg = msg;
 		this.res = res;
 	}
@@ -27,11 +23,11 @@ public class Reply {
 		this.strToJson = strToJson;
 	}
 
-	public String getMsg() {
+	public DepartmentCRUD getMsg() {
 		return msg;
 	}
 
-	public void setMsg(String msg) {
+	public void setMsg(DepartmentCRUD msg) {
 		this.msg = msg;
 	}
 
@@ -42,6 +38,5 @@ public class Reply {
 	public void setRes(int res) {
 		this.res = res;
 	}
-	
-	
+
 }
