@@ -1,6 +1,7 @@
-package java_tutorial.parser.json.socket.ui;
+package java_tutorial.parser.json.socket.ui.msg;
 
 import java_tutorial.parser.json.socket.dto.Title;
+import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
 
 public class MessengerTitle {
 	public TitleCRUD msg;

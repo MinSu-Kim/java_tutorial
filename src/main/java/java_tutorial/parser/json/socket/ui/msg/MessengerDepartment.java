@@ -1,6 +1,7 @@
-package java_tutorial.parser.json.socket.ui;
+package java_tutorial.parser.json.socket.ui.msg;
 
 import java_tutorial.parser.json.socket.dto.Department;
+import java_tutorial.parser.json.socket.ui.enum_crud.DepartmentCRUD;
 
 public class MessengerDepartment {
 	public Department department;

@@ -1,4 +1,4 @@
-package java_tutorial.parser.json.socket.ui;
+package java_tutorial.parser.json.socket.ui.thread;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,11 +12,15 @@ import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java_tutorial.parser.json.socket.dto.Department;
+import java_tutorial.parser.json.socket.dto.Title;
+import java_tutorial.parser.json.socket.ui.TitleFrameUI;
+import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
+import java_tutorial.parser.json.socket.ui.msg.MessengerTitle;
+import java_tutorial.parser.json.socket.ui.replymsg.ReplyTitle;
 
-public class ReceiveDepartmentThread extends Thread {
-	private DepartmentFrameUI departmentUI;
-	private List<Department> itemList;
+public class ReceiveTitleThread extends Thread {
+	private TitleFrameUI titleFrame;
+	private List<Title> itemList;
 	private DataInputStream in;
 	private DataOutputStream out;
 	
@@ -30,7 +34,7 @@ public class ReceiveDepartmentThread extends Thread {
 			e.printStackTrace();
 		}
 		
-		sendMessage(out, null, DepartmentCRUD.DEPARTMENT_LIST);
+		sendMessage(out, null, TitleCRUD.TITLE_LIST);
 	}
 
 
@@ -49,24 +53,24 @@ public class ReceiveDepartmentThread extends Thread {
 					System.out.println("receive message " + msg);
 					rep = gson.fromJson(msg, ReplyTitle.class);
 					if (rep.getMsg()==TitleCRUD.TITLE_LIST) {
-						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Department>>() {}.getType());
-						if (departmentUI == null) {
-							departmentUI = new DepartmentFrameUI("流氓包府");
-							departmentUI.setOut(out);
-							departmentUI.setTitleList(itemList);
+						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Title>>() {}.getType());
+						if (titleFrame == null) {
+							titleFrame = new TitleFrameUI("流氓包府");
+							titleFrame.setOut(out);
+							titleFrame.setTitleList(itemList);
+							titleFrame.setVisible(true);
 						} else {
-							departmentUI.setTitleList(itemList);
+							titleFrame.setTitleList(itemList);
 						}
 					}
 
 					if (rep.getRes() == 1) {
 						JOptionPane.showMessageDialog(null, rep.getMsg() + "己傍");
-						sendMessage(out, null, DepartmentCRUD.DEPARTMENT_LIST);
+						sendMessage(out, null, TitleCRUD.TITLE_LIST);
 					}
 					
-					departmentUI.refreshUI();
+					titleFrame.refreshUI();
 				}
-							
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -75,16 +79,15 @@ public class ReceiveDepartmentThread extends Thread {
 		}
 	}
 
-	private void sendMessage(DataOutputStream out, Department department, DepartmentCRUD msg) {
+	private void sendMessage(DataOutputStream out, Title title, TitleCRUD msg) {
 		Gson gson = new Gson();
-		MessengerDepartment messenger = new MessengerDepartment( department, msg);
+		MessengerTitle messenger = new MessengerTitle( title, msg);
 		String json = gson.toJson(messenger);
 		System.out.println("json" + json);
 		try {
 			out.writeUTF(json);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}		
+		}
 	}
-	
 }

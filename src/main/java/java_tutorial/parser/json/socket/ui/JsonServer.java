@@ -15,6 +15,9 @@ import com.google.gson.reflect.TypeToken;
 import java_tutorial.parser.json.socket.dao.TitleDao;
 import java_tutorial.parser.json.socket.dao.TitleDaoImpl;
 import java_tutorial.parser.json.socket.dto.Title;
+import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
+import java_tutorial.parser.json.socket.ui.msg.MessengerTitle;
+import java_tutorial.parser.json.socket.ui.replymsg.ReplyTitle;
 
 public class JsonServer {
 	public static final String HOST = "localhost";

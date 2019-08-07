@@ -1,4 +1,6 @@
-package java_tutorial.parser.json.socket.ui;
+package java_tutorial.parser.json.socket.ui.replymsg;
+
+import java_tutorial.parser.json.socket.ui.enum_crud.DepartmentCRUD;
 
 public class ReplyDepartment {
 	private DepartmentCRUD msg;

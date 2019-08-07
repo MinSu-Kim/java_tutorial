@@ -17,7 +17,9 @@ import com.google.gson.Gson;
 
 import java_tutorial.parser.json.socket.dto.Title;
 import java_tutorial.parser.json.socket.ui.content.PanelTitle;
+import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
 import java_tutorial.parser.json.socket.ui.list.TitleList;
+import java_tutorial.parser.json.socket.ui.msg.MessengerTitle;
 
 @SuppressWarnings("serial")
 public class TitleFrameUI extends JFrame implements ActionListener {

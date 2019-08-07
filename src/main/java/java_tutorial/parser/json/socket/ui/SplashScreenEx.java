@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
+import java_tutorial.parser.json.socket.ui.thread.ReceiveTitleThread;
+
 public class SplashScreenEx {
 	private JFrame frame;
 	private JLabel text = new JLabel("Loading....");
