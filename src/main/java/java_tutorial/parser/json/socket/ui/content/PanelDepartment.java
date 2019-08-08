@@ -21,10 +21,10 @@ public class PanelDepartment extends JPanel {
 	}
 
 	protected void initComponents(String title) {
-		setBorder(new TitledBorder(null, title + " Á¤º¸", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new GridLayout(0, 2, 10, 10));
 
-		JLabel lblDeptNo = new JLabel("ºÎ¼­ ¹øÈ£");
+		JLabel lblDeptNo = new JLabel("ë¶€ì„œ ë²ˆí˜¸");
 		lblDeptNo.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblDeptNo);
 
@@ -32,7 +32,7 @@ public class PanelDepartment extends JPanel {
 		add(tfDeptNo);
 		tfDeptNo.setColumns(10);
 
-		JLabel lblDeptName = new JLabel("ºÎ¼­¸í");
+		JLabel lblDeptName = new JLabel("ë¶€ì„œëª…");
 		lblDeptName.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblDeptName);
 
@@ -40,7 +40,7 @@ public class PanelDepartment extends JPanel {
 		tfDeptName.setColumns(10);
 		add(tfDeptName);
 		
-		JLabel lblFloor = new JLabel("À§Ä¡(Ãþ)");
+		JLabel lblFloor = new JLabel("ìœ„ì¹˜(ì¸µ)");
 		lblFloor.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblFloor);
 		

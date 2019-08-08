@@ -19,6 +19,8 @@ public class JsonServer {
 	public static final int PORT_DEPARTMENT = 12346;
 	public static final int PORT_EMPLOYEE = 12347;
 	
+	public static final int TIME_OUT = 1000*60;
+	
 	private ServerSocket serverTitleSocket;
 	private ServerSocket serverDeptSocket;
 	private ServerSocket serverEmpSocket;
@@ -44,10 +46,11 @@ public class JsonServer {
 
 	private void setupTitleConnection() {
 		try {
-			serverTitleSocket = new ServerSocket(PORT_TITLE); // ¼­¹ö ¼ÒÄÏ »ý¼º
+			serverTitleSocket = new ServerSocket(PORT_TITLE); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			serverTitleSocket.setSoTimeout(TIME_OUT); //1ë¶„
 			System.out.println("Server Ready " + serverTitleSocket);
 			while(true) {
-				Socket socket = serverTitleSocket.accept(); // Å¬¶óÀÌ¾ðÆ®·ÎºÎÅÍ ¿¬°á ¿äÃ» ´ë±â
+				Socket socket = serverTitleSocket.accept(); // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ï¿½ï¿½ï¿½
 				System.out.println("Client Request " + socket);
 				new ServerProcessTitleThread(socket, titleDao).start();
 			}
@@ -66,10 +69,11 @@ public class JsonServer {
 	
 	private void setupDeptConnection() {
 		try {
-			serverDeptSocket = new ServerSocket(PORT_DEPARTMENT); // ¼­¹ö ¼ÒÄÏ »ý¼º
+			serverDeptSocket = new ServerSocket(PORT_DEPARTMENT); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			serverDeptSocket.setSoTimeout(TIME_OUT); //1ì‹œê°„
 			System.out.println("Server Ready " + serverDeptSocket);
 			while(true) {
-				Socket socket = serverDeptSocket.accept(); // Å¬¶óÀÌ¾ðÆ®·ÎºÎÅÍ ¿¬°á ¿äÃ» ´ë±â
+				Socket socket = serverDeptSocket.accept(); // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ï¿½ï¿½ï¿½
 				System.out.println("Client Request " + socket);
 				new ServerProcessDeptThread(socket, deptDao).start();
 			}
@@ -88,10 +92,11 @@ public class JsonServer {
 
 	private void setupEmpConnection() {
 		try {
-			serverEmpSocket = new ServerSocket(PORT_EMPLOYEE); // ¼­¹ö ¼ÒÄÏ »ý¼º
+			serverEmpSocket = new ServerSocket(PORT_EMPLOYEE); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			serverEmpSocket.setSoTimeout(TIME_OUT); //1ì‹œê°„
 			System.out.println("Server Ready " + serverEmpSocket);
 			while(true) {
-				Socket socket = serverEmpSocket.accept(); // Å¬¶óÀÌ¾ðÆ®·ÎºÎÅÍ ¿¬°á ¿äÃ» ´ë±â
+				Socket socket = serverEmpSocket.accept(); // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ï¿½ï¿½ï¿½
 				System.out.println("Client Request " + socket);
 				new ServerProcessEmployeeThread(socket, empDao).start();
 			}

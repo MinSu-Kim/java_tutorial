@@ -21,6 +21,9 @@ public class SplashScreenEx {
 	private JFrame frame;
 	private JLabel text = new JLabel("Loading....");
 	private JProgressBar progressBar = new JProgressBar();// Creating an object of JProgressBar
+	private ReceiveEmployeeThread receiveEmp;
+	private ReceiveDepartmentThread receiveDept;
+	private ReceiveTitleThread receiveTitle;
 	
 	public SplashScreenEx() {
 		
@@ -55,10 +58,9 @@ public class SplashScreenEx {
 		DataOutputStream outE = new DataOutputStream(socketEmp.getOutputStream());
 		DataInputStream inE = new DataInputStream(socketEmp.getInputStream());
 		
-		ReceiveEmployeeThread receiveEmp = new ReceiveEmployeeThread();
+		receiveEmp = new ReceiveEmployeeThread();
 		receiveEmp.setInOutStream(inE, outE);
 		receiveEmp.start();
-		
 	}
 
 	private void connectDept() throws UnknownHostException, IOException {
@@ -68,7 +70,7 @@ public class SplashScreenEx {
 		DataOutputStream outD = new DataOutputStream(socketDept.getOutputStream());
 		DataInputStream inD = new DataInputStream(socketDept.getInputStream());
 		
-		ReceiveDepartmentThread receiveDept = new ReceiveDepartmentThread();
+		receiveDept = new ReceiveDepartmentThread();
 		receiveDept.setInOutStream(inD, outD);
 		receiveDept.start();
 		
@@ -81,10 +83,9 @@ public class SplashScreenEx {
 		DataOutputStream out = new DataOutputStream(socketTitle.getOutputStream());
 		DataInputStream in = new DataInputStream(socketTitle.getInputStream());
 		
-		ReceiveTitleThread receiveTitle = new ReceiveTitleThread();
+		receiveTitle = new ReceiveTitleThread();
 		receiveTitle.setInOutStream(in, out);
 		receiveTitle.start();
-		
 	}
 
 	private void createGUI() {
@@ -115,17 +116,25 @@ public class SplashScreenEx {
 
 	private void runningPBar() {
 		int i = 0;
-		do {
+		while(true) {
 			try {
-				Thread.sleep(50);// Pausing execution for 50 milliseconds
+				Thread.sleep(30);// Pausing execution for 50 milliseconds
 				i++;
 				progressBar.setValue(i);// Setting value of Progress Bar
-//				progressBar.setString("LOADING " + "cnt : " + cnt + " p : " + p);
+				
+//				progressBar.setString(String.format("LOADING %d %s i = %d", i,"%", i));
+				if (receiveDept.isListLoad() && receiveTitle.isListLoad() && receiveEmp.isListLoad() && i==100) {
+					break;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} while (i<100);
+		}
 		frame.dispose();
+		receiveEmp.getEmployeeFrame().setVisible(true);
+		receiveDept.getDepartmentUI().setVisible(true);
+		receiveTitle.getTitleFrame().setVisible(true);
+		
 	}
 
 }

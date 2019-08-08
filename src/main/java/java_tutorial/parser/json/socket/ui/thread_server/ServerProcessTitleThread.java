@@ -29,7 +29,7 @@ public class ServerProcessTitleThread extends Thread {
 		
 		@Override
 		public void run() {
-				ServerTitleReceiver titleTh = new ServerTitleReceiver(); // »ó´ë·ÎºÎÅÍ ¸Ş½ÃÁö ¼ö½ÅÀ» À§ÇÑ ½º·¹µå »ı¼º
+				ServerTitleReceiver titleTh = new ServerTitleReceiver(); // ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ ï¿½Ş½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				titleTh.setDao(titleDao);
 				titleTh.setSocket(socket);
 				titleTh.start();
@@ -99,7 +99,7 @@ public class ServerProcessTitleThread extends Thread {
 						}
 					}
 				} catch (SocketException e) {
-					System.out.println("Å¬¶óÀÌ¾ğÆ®¿Í ¿¬°áÀÌ ²÷¾î Á³½À´Ï´Ù.");
+					System.out.println("í´ë¼ì´ì–¸íŠ¸ ì—°ê²° ì¢…ë£Œ");
 				} catch (EOFException e) {
 					e.printStackTrace();
 				} catch (IOException e) {

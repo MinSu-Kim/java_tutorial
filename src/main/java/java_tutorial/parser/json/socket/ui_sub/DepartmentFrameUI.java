@@ -49,6 +49,8 @@ public class DepartmentFrameUI extends JFrame implements ActionListener {
 
 	private void initComponents(String title) {
 		setTitle(title);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 		setBounds(200, 100, 450, 450);
 		JPanel pMain = new JPanel();
 		getContentPane().add(pMain, BorderLayout.CENTER);

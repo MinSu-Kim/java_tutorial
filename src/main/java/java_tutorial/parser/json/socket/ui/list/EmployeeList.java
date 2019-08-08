@@ -29,7 +29,7 @@ public class EmployeeList extends JPanel {
 	}
 
 	private void initComponents(String title) {
-		setBorder(new TitledBorder(null, title + "목록", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
@@ -105,7 +105,7 @@ public class EmployeeList extends JPanel {
 			return item;
 		}
 		if (i < 0 || i > table.getModel().getRowCount() - 1) {
-			JOptionPane.showMessageDialog(null, "해당 직책을 선택하세요");
+			JOptionPane.showMessageDialog(null, "해당 사원을 선택하세요");
 			return item;
 		}
 

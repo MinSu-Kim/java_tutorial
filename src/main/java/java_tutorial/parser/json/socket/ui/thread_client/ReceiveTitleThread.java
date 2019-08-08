@@ -30,7 +30,13 @@ public class ReceiveTitleThread extends Thread {
 		sendMessage(out, null, TitleCRUD.TITLE_LIST);
 	}
 
+	public boolean isListLoad() {
+		return itemList==null?false:true;
+	}
 
+	public TitleFrameUI getTitleFrame() {
+		return titleFrame;
+	}
 
 	@Override
 	public void run() {
@@ -48,17 +54,15 @@ public class ReceiveTitleThread extends Thread {
 					if (rep.getMsg()==TitleCRUD.TITLE_LIST) {
 						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Title>>() {}.getType());
 						if (titleFrame == null) {
-							titleFrame = new TitleFrameUI("¡˜√•∞¸∏Æ");
+							titleFrame = new TitleFrameUI("ÏßÅÏ±Ö Í¥ÄÎ¶¨");
 							titleFrame.setOut(out);
-							titleFrame.setTitleList(itemList);
-							titleFrame.setVisible(true);
-						} else {
-							titleFrame.setTitleList(itemList);
-						}
+						} 
+						titleFrame.setTitleList(itemList);
+						
 					}
 
 					if (rep.getRes() == 1) {
-						JOptionPane.showMessageDialog(null, rep.getMsg() + "º∫∞¯");
+						JOptionPane.showMessageDialog(null, rep.getMsg() + " ÏÑ±Í≥µ");
 						sendMessage(out, null, TitleCRUD.TITLE_LIST);
 					}
 					
@@ -68,7 +72,7 @@ public class ReceiveTitleThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			System.out.println("»£Ω∫∆ÆøÕ ø¨∞·¿Ã ≤˜±Ë");
+			System.out.println("ÌÅ¥ÎùºÏù¥Ïñ∏Ìä∏ Ïó∞Í≤∞ Ï¢ÖÎ£å");
 		}
 	}
 

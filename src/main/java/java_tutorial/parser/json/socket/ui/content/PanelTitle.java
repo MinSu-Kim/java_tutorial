@@ -20,10 +20,10 @@ public class PanelTitle extends JPanel {
 	}
 
 	protected void initComponents(String title) {
-		setBorder(new TitledBorder(null, title + " Á¤º¸", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new GridLayout(0, 2, 10, 10));
 
-		JLabel lblTitleNo = new JLabel("Á÷Ã¥ ¹øÈ£");
+		JLabel lblTitleNo = new JLabel("ì§ì±…ë²ˆí˜¸");
 		lblTitleNo.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblTitleNo);
 
@@ -31,7 +31,7 @@ public class PanelTitle extends JPanel {
 		add(tfTitleNo);
 		tfTitleNo.setColumns(10);
 
-		JLabel lblTitleName = new JLabel("Á÷Ã¥¸í");
+		JLabel lblTitleName = new JLabel("ì§ì±…ëª…");
 		lblTitleName.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblTitleName);
 

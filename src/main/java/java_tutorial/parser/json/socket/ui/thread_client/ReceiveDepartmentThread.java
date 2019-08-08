@@ -21,14 +21,21 @@ public class ReceiveDepartmentThread extends Thread {
 	private List<Department> itemList;
 	private DataInputStream in;
 	private DataOutputStream out;
-	
+
 	public void setInOutStream(DataInputStream in, DataOutputStream out) {
 		this.in = in;
 		this.out = out;
-		
+
 		System.out.println("sendMessage Department - List");
 		sendMessage(out, null, DepartmentCRUD.DEPARTMENT_LIST);
+	}
 
+	public boolean isListLoad() {
+		return itemList==null?false:true;
+	}
+
+	public DepartmentFrameUI getDepartmentUI() {
+		return departmentUI;
 	}
 
 	@Override
@@ -45,31 +52,28 @@ public class ReceiveDepartmentThread extends Thread {
 				if (msg != null) {
 					System.out.println("receive message " + msg);
 					rep = gson.fromJson(msg, ReplyDepartment.class);
-					if (rep.getMsg()==DepartmentCRUD.DEPARTMENT_LIST) {
-						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Department>>() {}.getType());
+					if (rep.getMsg() == DepartmentCRUD.DEPARTMENT_LIST) {
+						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Department>>() {
+						}.getType());
 						if (departmentUI == null) {
-							departmentUI = new DepartmentFrameUI("∫Œº≠∞¸∏Æ");
+							departmentUI = new DepartmentFrameUI("Î∂ÄÏÑú Í¥ÄÎ¶¨");
 							departmentUI.setOut(out);
-							departmentUI.setTitleList(itemList);
-							departmentUI.setVisible(true);
-						} else {
-							departmentUI.setTitleList(itemList);
-						}
+						} 
+						departmentUI.setTitleList(itemList);
 					}
 
 					if (rep.getRes() == 1) {
-						JOptionPane.showMessageDialog(null, rep.getMsg() + "º∫∞¯");
+						JOptionPane.showMessageDialog(null, rep.getMsg() + " ÏÑ±Í≥µ");
 						sendMessage(out, null, DepartmentCRUD.DEPARTMENT_LIST);
 					}
-					
 					departmentUI.refreshUI();
 				}
-							
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			System.out.println("»£Ω∫∆ÆøÕ ø¨∞·¿Ã ≤˜±Ë");
+			System.out.println("ÌÅ¥ÎùºÏù¥Ïñ∏Ìä∏ Ïó∞Í≤∞ Ï¢ÖÎ£å");
 		}
 	}
 
@@ -82,11 +86,7 @@ public class ReceiveDepartmentThread extends Thread {
 			out.writeUTF(json);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}		
+		}
 	}
 
-
-
-
-	
 }

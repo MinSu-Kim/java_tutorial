@@ -40,6 +40,17 @@ public class ReceiveEmployeeThread extends Thread {
 		sendMessage(out, null, EmployeeCRUD.EMPLOYEE_LIST_TITLE);
 	}
 
+	public boolean isListLoad() {
+		if (itemList!=null && deptList != null && titleList!=null)
+			return true;
+		else 
+			return false;
+	}
+	
+	public EmployeeFrameUI getEmployeeFrame() {
+		return employeeFrame;
+	}
+
 	@Override
 	public void run() {
 		System.out.println("receive");
@@ -55,7 +66,7 @@ public class ReceiveEmployeeThread extends Thread {
 					rep = gson.fromJson(msg, ReplyEmployee.class);
 					
 					if (employeeFrame == null) {
-						employeeFrame = new EmployeeFrameUI("ªÁø¯ ∞¸∏Æ");
+						employeeFrame = new EmployeeFrameUI("ÏÇ¨Ïõê Í¥ÄÎ¶¨");
 						employeeFrame.setOut(out);
 					}
 					
@@ -75,21 +86,20 @@ public class ReceiveEmployeeThread extends Thread {
 					}
 					
 					if (rep.getRes() == 1) {
-						JOptionPane.showMessageDialog(null, rep.getMsg() + "º∫∞¯");
+						JOptionPane.showMessageDialog(null, rep.getMsg() + " ÏÑ±Í≥µ");
 						sendMessage(out, null, EmployeeCRUD.EMPLOYEE_LIST);
 					}
 				
-					if (itemList!=null && titleList !=null && deptList != null) {
-						employeeFrame.setVisible(true);
-					}
-					
+//					if (itemList!=null && titleList !=null && deptList != null) {
+//						employeeFrame.setVisible(true);
+//					}
 					employeeFrame.refreshUI();
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			System.out.println("»£Ω∫∆ÆøÕ ø¨∞·¿Ã ≤˜±Ë");
+			System.out.println("ÌÅ¥ÎùºÏù¥Ïñ∏Ìä∏ Ïó∞Í≤∞ Ï¢ÖÎ£å");
 		}
 	}
 

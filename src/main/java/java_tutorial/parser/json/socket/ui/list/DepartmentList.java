@@ -29,7 +29,7 @@ public class DepartmentList extends JPanel {
 	}
 
 	private void initComponents(String title) {
-		setBorder(new TitledBorder(null, title + "¸ñ·Ï", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
@@ -60,7 +60,7 @@ public class DepartmentList extends JPanel {
 	}
 
 	protected String[] getColumnNames() {
-		return new String[] { "ºÎ¼­¹øÈ£", "ºÎ¼­¸í", "À§Ä¡" };
+		return new String[] { "ë¶€ì„œë²ˆí˜¸", "ë¶€ì„œëª…", "ìœ„ì¹˜(ì¸µ)" };
 	}
 
 	public void reloadData() {
@@ -104,7 +104,7 @@ public class DepartmentList extends JPanel {
 			return item;
 		}
 		if (i < 0 || i > table.getModel().getRowCount() - 1) {
-			JOptionPane.showMessageDialog(null, "ÇØ´ç Á÷Ã¥À» ¼±ÅÃÇÏ¼¼¿ä");
+			JOptionPane.showMessageDialog(null, "ì§ì±…ì„ ì„ íƒí•˜ì„¸ìš”");
 			return item;
 		}
 

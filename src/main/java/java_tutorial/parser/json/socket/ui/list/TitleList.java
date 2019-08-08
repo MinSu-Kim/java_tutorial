@@ -29,7 +29,7 @@ public class TitleList extends JPanel {
 	}
 
 	private void initComponents(String title) {
-		setBorder(new TitledBorder(null, title + "¸ñ·Ï", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, title , TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
@@ -90,7 +90,7 @@ public class TitleList extends JPanel {
 			return item;
 		}
 		if (i < 0 || i > table.getModel().getRowCount() - 1) {
-			JOptionPane.showMessageDialog(null, "ÇØ´ç Á÷Ã¥À» ¼±ÅÃÇÏ¼¼¿ä");
+			JOptionPane.showMessageDialog(null, "ì§ì±…ì„ ì„ íƒí•˜ì„¸ìš”.");
 			return item;
 		}
 
@@ -121,7 +121,7 @@ public class TitleList extends JPanel {
 	}
 
 	protected String[] getColumnNames() {
-		return new String[] { "Á÷Ã¥¹øÈ£", "Á÷Ã¥¸í"};
+		return new String[] { "ì§ì±…ë²ˆí˜¸", "ì§ì±…ëª…"};
 	}
 
 }

@@ -48,10 +48,10 @@ public class PanelEmployee extends JPanel {
 
 	protected void initComponents(String title) {
 		setSize(450, 300);
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\uC0AC\uC6D0\uC815\uBCF4", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new GridLayout(0, 2, 10, 10));
 
-		JLabel lblEmpNo = new JLabel("\uC0AC\uC6D0 \uBC88\uD638");
+		JLabel lblEmpNo = new JLabel("사원번호");
 		lblEmpNo.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblEmpNo);
 
@@ -59,7 +59,7 @@ public class PanelEmployee extends JPanel {
 		add(tfEmpNo);
 		tfEmpNo.setColumns(10);
 
-		JLabel lblEmpName = new JLabel("\uC0AC\uC6D0\uBA85");
+		JLabel lblEmpName = new JLabel("사원명");
 		lblEmpName.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblEmpName);
 
@@ -67,7 +67,7 @@ public class PanelEmployee extends JPanel {
 		tfEmpName.setColumns(10);
 		add(tfEmpName);
 		
-		lblSalary = new JLabel("\uAE09\uC5EC");
+		lblSalary = new JLabel("급여");
 		lblSalary.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblSalary);
 		
@@ -75,14 +75,14 @@ public class PanelEmployee extends JPanel {
 		spinSalary.setModel(new SpinnerNumberModel(1500000, 1000000, 5000000, 100000));
 		add(spinSalary);
 		
-		lblDno = new JLabel("\uBD80\uC11C");
+		lblDno = new JLabel("부서");
 		lblDno.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblDno);
 		
 		cmbDno = new JComboBox<>();
 		add(cmbDno);
 		
-		lblGender = new JLabel("\uC131\uBCC4");
+		lblGender = new JLabel("성별");
 		lblGender.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblGender);
 		
@@ -91,16 +91,16 @@ public class PanelEmployee extends JPanel {
 		pGender.setLayout(new BoxLayout(pGender, BoxLayout.X_AXIS));
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		rdbMale = new JRadioButton("\uB0A8");
+		rdbMale = new JRadioButton("남");
 		buttonGroup.add(rdbMale);
 		rdbMale.setSelected(true);
 		pGender.add(rdbMale);
 		
-		rdbFeMale = new JRadioButton("\uC5EC");
+		rdbFeMale = new JRadioButton("여");
 		buttonGroup.add(rdbFeMale);
 		pGender.add(rdbFeMale);
 		
-		lblJoin = new JLabel("\uC785\uC0AC\uC77C");
+		lblJoin = new JLabel("입사일");
 		lblJoin.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblJoin);
 		
@@ -108,7 +108,7 @@ public class PanelEmployee extends JPanel {
 		tfJoin.setColumns(10);
 		add(tfJoin);
 		
-		lblTitle = new JLabel("\uC9C1\uCC45");
+		lblTitle = new JLabel("직책");
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblTitle);
 		

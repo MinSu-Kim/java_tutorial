@@ -48,38 +48,38 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 	}
 
 	private void initComponents(String title) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle(title);
 		setBounds(200, 100, 450, 450);
 		JPanel pMain = new JPanel();
 		getContentPane().add(pMain, BorderLayout.CENTER);
 		pMain.setLayout(new BorderLayout(0, 0));
 
-		pContent = new PanelTitle("¡˜√•");
+		pContent = new PanelTitle("ÏßÅÏ±Ö Ï†ïÎ≥¥");
 
 		pMain.add(pContent, BorderLayout.CENTER);
 
 		JPanel pBtns = new JPanel();
 		pMain.add(pBtns, BorderLayout.SOUTH);
 
-		btnAdd = new JButton("√ﬂ∞°");
+		btnAdd = new JButton("Ï∂îÍ∞Ä");
 		btnAdd.addActionListener(this);
 		pBtns.add(btnAdd);
 
-		btnCancel = new JButton("√Îº“");
+		btnCancel = new JButton("Ï∑®ÏÜå");
 		btnCancel.addActionListener(this);
 		pBtns.add(btnCancel);
 
-		pList = new TitleList("¡˜√• ∏Ò∑œ");
+		pList = new TitleList("ÏßÅÏ±Ö Î™©Î°ù");
 		getContentPane().add(pList, BorderLayout.SOUTH);
 
 		popupMenu = new JPopupMenu();
 
-		mntmUpdate = new JMenuItem("ºˆ¡§");
+		mntmUpdate = new JMenuItem("ÏàòÏ†ï");
 		mntmUpdate.addActionListener(this);
 		popupMenu.add(mntmUpdate);
 
-		mntmDelete = new JMenuItem("ªË¡¶");
+		mntmDelete = new JMenuItem("ÏÇ≠Ï†ú");
 		mntmDelete.addActionListener(this);
 		popupMenu.add(mntmDelete);
 
@@ -97,10 +97,10 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 			actionPerformedBtnCancel(e);
 		}
 		if (e.getSource() == btnAdd) {
-			if (e.getActionCommand().equals("√ﬂ∞°")) {
+			if (e.getActionCommand().equals("Ï∂îÍ∞Ä")) {
 				actionPerformedBtnAdd(e);
 			}
-			if (e.getActionCommand().equals("ºˆ¡§")) {
+			if (e.getActionCommand().equals("ÏàòÏ†ï")) {
 				actionPerformedBtnUpdate(e);
 			}
 		}
@@ -119,7 +119,7 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 	private void actionPerformedBtnUpdate(ActionEvent e) {
 		Title title = pContent.getItem();
 		sendMessage(title, TitleCRUD.TITLE_UPDATE);
-		btnAdd.setText("√ﬂ∞°");
+		btnAdd.setText("Ï∂îÍ∞Ä");
 	}
 	
 	protected void actionPerformedBtnAdd(ActionEvent e) {
@@ -134,7 +134,7 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 	private void actionPerformedMntmUpdate(ActionEvent e) {
 		Title updateTitle = pList.getSelectedItem();
 		pContent.setItem(updateTitle);
-		btnAdd.setText("ºˆ¡§");
+		btnAdd.setText("ÏàòÏ†ï");
 	}
 
 	private void actionPerformedMntmDelete(ActionEvent e) {
