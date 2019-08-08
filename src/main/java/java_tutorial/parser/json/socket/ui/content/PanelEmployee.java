@@ -19,7 +19,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import java_tutorial.parser.json.socket.dto.Department;
