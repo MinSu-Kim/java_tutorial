@@ -1,4 +1,4 @@
-package java_tutorial.parser.json.socket.ui;
+package java_tutorial.parser.json.socket.ui_sub;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

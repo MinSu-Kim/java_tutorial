@@ -11,10 +11,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java_tutorial.parser.json.socket.dto.Title;
-import java_tutorial.parser.json.socket.ui.TitleFrameUI;
 import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
 import java_tutorial.parser.json.socket.ui.msg_reply.ReplyTitle;
 import java_tutorial.parser.json.socket.ui.msg_send.MessengerTitle;
+import java_tutorial.parser.json.socket.ui_sub.TitleFrameUI;
 
 public class ReceiveTitleThread extends Thread {
 	private TitleFrameUI titleFrame;

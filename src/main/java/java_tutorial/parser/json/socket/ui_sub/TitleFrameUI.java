@@ -1,4 +1,4 @@
-package java_tutorial.parser.json.socket.ui;
+package java_tutorial.parser.json.socket.ui_sub;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -15,19 +15,17 @@ import javax.swing.JPopupMenu;
 
 import com.google.gson.Gson;
 
-import java_tutorial.parser.json.socket.dto.Department;
-import java_tutorial.parser.json.socket.dto.Employee;
 import java_tutorial.parser.json.socket.dto.Title;
-import java_tutorial.parser.json.socket.ui.content.PanelEmployee;
-import java_tutorial.parser.json.socket.ui.enum_crud.EmployeeCRUD;
-import java_tutorial.parser.json.socket.ui.list.EmployeeList;
-import java_tutorial.parser.json.socket.ui.msg_send.MessengerEmployee;
+import java_tutorial.parser.json.socket.ui.content.PanelTitle;
+import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
+import java_tutorial.parser.json.socket.ui.list.TitleList;
+import java_tutorial.parser.json.socket.ui.msg_send.MessengerTitle;
 
 @SuppressWarnings("serial")
-public class EmployeeFrameUI extends JFrame implements ActionListener {
+public class TitleFrameUI extends JFrame implements ActionListener {
 	private JButton btnAdd;
-	protected PanelEmployee pContent;
-	protected EmployeeList pList;
+	protected PanelTitle pContent;
+	protected TitleList pList;
 	private JButton btnCancel;
 
 	private JPopupMenu popupMenu;
@@ -35,37 +33,29 @@ public class EmployeeFrameUI extends JFrame implements ActionListener {
 	private JMenuItem mntmDelete;
 
 	private DataOutputStream out;
-	private List<Employee> itemList;
+	private List<Title> itemList;
 
-	public void setItemList(List<Employee> itemList) {
+	public void setTitleList(List<Title> itemList) {
 		this.itemList = itemList;
-	}
-
-	public void setDeptList(List<Department> deptList) {
-		pContent.setDeptList(deptList);
-	}
-
-	public void setTitleList(List<Title> titleList) {
-		pContent.setTitleList(titleList);
 	}
 
 	public void setOut(DataOutputStream out) {
 		this.out = out;
 	}
 
-	public EmployeeFrameUI(String title) {
+	public TitleFrameUI(String title) {
 		initComponents(title);
 	}
 
 	private void initComponents(String title) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle(title);
-		setBounds(200, 100, 550, 700);
+		setBounds(200, 100, 450, 450);
 		JPanel pMain = new JPanel();
 		getContentPane().add(pMain, BorderLayout.CENTER);
 		pMain.setLayout(new BorderLayout(0, 0));
 
-		pContent = new PanelEmployee("사원");
+		pContent = new PanelTitle("직책");
 
 		pMain.add(pContent, BorderLayout.CENTER);
 
@@ -80,7 +70,7 @@ public class EmployeeFrameUI extends JFrame implements ActionListener {
 		btnCancel.addActionListener(this);
 		pBtns.add(btnCancel);
 
-		pList = new EmployeeList("직책 목록");
+		pList = new TitleList("직책 목록");
 		getContentPane().add(pList, BorderLayout.SOUTH);
 
 		popupMenu = new JPopupMenu();
@@ -115,7 +105,7 @@ public class EmployeeFrameUI extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
+
 	protected void clearContent() {
 		pContent.clearComponent(itemList.size() == 0 ? 1 : itemList.size() + 1);
 	}
@@ -125,16 +115,16 @@ public class EmployeeFrameUI extends JFrame implements ActionListener {
 		pList.reloadData();
 		clearContent();
 	}
-	
+
 	private void actionPerformedBtnUpdate(ActionEvent e) {
-		Employee emp = pContent.getItem();
-		sendMessage(emp, EmployeeCRUD.EMPLOYEE_UPDATE);
-		btnAdd.setText("수정");
+		Title title = pContent.getItem();
+		sendMessage(title, TitleCRUD.TITLE_UPDATE);
+		btnAdd.setText("추가");
 	}
 	
 	protected void actionPerformedBtnAdd(ActionEvent e) {
-		Employee emp = pContent.getItem();
-		sendMessage(emp, EmployeeCRUD.EMPLOYEE_INSERT);
+		Title title = pContent.getItem();
+		sendMessage(title, TitleCRUD.TITLE_INSERT);
 	}
 	
 	protected void actionPerformedBtnCancel(ActionEvent e) {
@@ -142,19 +132,19 @@ public class EmployeeFrameUI extends JFrame implements ActionListener {
 	}
 	
 	private void actionPerformedMntmUpdate(ActionEvent e) {
-		Employee updateEmp = pList.getSelectedItem();
-		pContent.setItem(updateEmp);
+		Title updateTitle = pList.getSelectedItem();
+		pContent.setItem(updateTitle);
 		btnAdd.setText("수정");
 	}
 
 	private void actionPerformedMntmDelete(ActionEvent e) {
-		Employee delEmp = pList.getSelectedItem();
-		sendMessage(delEmp, EmployeeCRUD.EMPLOYEE_DELETE);
+		Title delDept = pList.getSelectedItem();
+		sendMessage(delDept, TitleCRUD.TITLE_DELETE);
 	}
 
-	private void sendMessage(Employee employee, EmployeeCRUD msg) {
+	private void sendMessage(Title title, TitleCRUD msg) {
 		Gson gson = new Gson();
-		MessengerEmployee messenger = new MessengerEmployee(employee, msg);
+		MessengerTitle messenger = new MessengerTitle(title, msg);
 		String json = gson.toJson(messenger);
 		System.out.println(json);
 		try {
@@ -163,5 +153,4 @@ public class EmployeeFrameUI extends JFrame implements ActionListener {
 			e1.printStackTrace();
 		}
 	}
-
 }

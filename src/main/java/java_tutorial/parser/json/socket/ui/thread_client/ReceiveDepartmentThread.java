@@ -11,10 +11,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java_tutorial.parser.json.socket.dto.Department;
-import java_tutorial.parser.json.socket.ui.DepartmentFrameUI;
 import java_tutorial.parser.json.socket.ui.enum_crud.DepartmentCRUD;
 import java_tutorial.parser.json.socket.ui.msg_reply.ReplyDepartment;
 import java_tutorial.parser.json.socket.ui.msg_send.MessengerDepartment;
+import java_tutorial.parser.json.socket.ui_sub.DepartmentFrameUI;
 
 public class ReceiveDepartmentThread extends Thread {
 	private DepartmentFrameUI departmentUI;

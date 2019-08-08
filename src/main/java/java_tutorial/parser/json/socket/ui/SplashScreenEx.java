@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -20,52 +21,70 @@ public class SplashScreenEx {
 	private JFrame frame;
 	private JLabel text = new JLabel("Loading....");
 	private JProgressBar progressBar = new JProgressBar();// Creating an object of JProgressBar
-
+	
 	public SplashScreenEx() {
-		try {
-			//////////////////////////////////////////////////////////
-			Socket socketTitle = new Socket(JsonServer.HOST, JsonServer.PORT_TITLE);
-			System.out.println(socketTitle);
-			
-			DataOutputStream out = new DataOutputStream(socketTitle.getOutputStream());
-			DataInputStream in = new DataInputStream(socketTitle.getInputStream());
-			
-			ReceiveTitleThread receiveTitle = new ReceiveTitleThread();
-			receiveTitle.setInOutStream(in, out);
-			receiveTitle.start();
-			
-			/////////////////////////////////////////////////////////////
-			Socket socketDept = new Socket(JsonServer.HOST, JsonServer.PORT_DEPARTMENT);
-			System.out.println(socketDept);
-			
-			DataOutputStream outD = new DataOutputStream(socketDept.getOutputStream());
-			DataInputStream inD = new DataInputStream(socketDept.getInputStream());
-			
-			ReceiveDepartmentThread receiveDept = new ReceiveDepartmentThread();
-			receiveDept.setInOutStream(inD, outD);
-			receiveDept.start();
-			
-			///////////////////////////////////////////////////
-			Socket socketEmp = new Socket(JsonServer.HOST, JsonServer.PORT_EMPLOYEE);
-			System.out.println(socketEmp);
-			
-			DataOutputStream outE = new DataOutputStream(socketEmp.getOutputStream());
-			DataInputStream inE = new DataInputStream(socketEmp.getInputStream());
-			
-			ReceiveEmployeeThread receiveEmp = new ReceiveEmployeeThread();
-			receiveEmp.setInOutStream(inE, outE);
-			receiveEmp.start();
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
+//		new Thread(()->runningPBar()).start();
+		connectServer();
 		createGUI();
 		addText();
 		addProgressBar();
 		runningPBar();
+
+	}
+
+	private void connectServer() {
+		try {
+			connectTitle();
+			connectDept();
+			connectEmp();
+		} catch (ConnectException e) {
+			System.out.println("Server Check~~!");
+			System.exit(1);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+
+	private void connectEmp() throws UnknownHostException, IOException {
+		Socket socketEmp = new Socket(JsonServer.HOST, JsonServer.PORT_EMPLOYEE);
+		System.out.println(socketEmp);
+		
+		DataOutputStream outE = new DataOutputStream(socketEmp.getOutputStream());
+		DataInputStream inE = new DataInputStream(socketEmp.getInputStream());
+		
+		ReceiveEmployeeThread receiveEmp = new ReceiveEmployeeThread();
+		receiveEmp.setInOutStream(inE, outE);
+		receiveEmp.start();
+		
+	}
+
+	private void connectDept() throws UnknownHostException, IOException {
+		Socket socketDept = new Socket(JsonServer.HOST, JsonServer.PORT_DEPARTMENT);
+		System.out.println(socketDept);
+		
+		DataOutputStream outD = new DataOutputStream(socketDept.getOutputStream());
+		DataInputStream inD = new DataInputStream(socketDept.getInputStream());
+		
+		ReceiveDepartmentThread receiveDept = new ReceiveDepartmentThread();
+		receiveDept.setInOutStream(inD, outD);
+		receiveDept.start();
+		
+	}
+
+	private void connectTitle() throws UnknownHostException, IOException {
+		Socket socketTitle = new Socket(JsonServer.HOST, JsonServer.PORT_TITLE);
+		System.out.println(socketTitle);
+		
+		DataOutputStream out = new DataOutputStream(socketTitle.getOutputStream());
+		DataInputStream in = new DataInputStream(socketTitle.getInputStream());
+		
+		ReceiveTitleThread receiveTitle = new ReceiveTitleThread();
+		receiveTitle.setInOutStream(in, out);
+		receiveTitle.start();
+		
 	}
 
 	private void createGUI() {
@@ -95,16 +114,17 @@ public class SplashScreenEx {
 	}
 
 	private void runningPBar() {
-		int i = 0;// Creating an integer variable and intializing it to 0
+		int i = 0;
 		do {
 			try {
-				Thread.sleep(10);// Pausing execution for 50 milliseconds
+				Thread.sleep(50);// Pausing execution for 50 milliseconds
 				i++;
 				progressBar.setValue(i);// Setting value of Progress Bar
+//				progressBar.setString("LOADING " + "cnt : " + cnt + " p : " + p);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} while (i <= 100);
+		} while (i<100);
 		frame.dispose();
 	}
 

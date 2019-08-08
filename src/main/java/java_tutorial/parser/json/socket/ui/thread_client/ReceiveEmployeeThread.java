@@ -13,10 +13,10 @@ import com.google.gson.reflect.TypeToken;
 import java_tutorial.parser.json.socket.dto.Department;
 import java_tutorial.parser.json.socket.dto.Employee;
 import java_tutorial.parser.json.socket.dto.Title;
-import java_tutorial.parser.json.socket.ui.EmployeeFrameUI;
 import java_tutorial.parser.json.socket.ui.enum_crud.EmployeeCRUD;
 import java_tutorial.parser.json.socket.ui.msg_reply.ReplyEmployee;
 import java_tutorial.parser.json.socket.ui.msg_send.MessengerEmployee;
+import java_tutorial.parser.json.socket.ui_sub.EmployeeFrameUI;
 
 public class ReceiveEmployeeThread extends Thread {
 	private EmployeeFrameUI employeeFrame;
