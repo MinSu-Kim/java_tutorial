@@ -1,10 +1,8 @@
-package java_tutorial.parser.json.socket.ui.thread;
+package java_tutorial.parser.json.socket.ui.thread_client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -15,10 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import java_tutorial.parser.json.socket.dto.Department;
 import java_tutorial.parser.json.socket.ui.DepartmentFrameUI;
 import java_tutorial.parser.json.socket.ui.enum_crud.DepartmentCRUD;
-import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
-import java_tutorial.parser.json.socket.ui.msg.MessengerDepartment;
-import java_tutorial.parser.json.socket.ui.replymsg.ReplyDepartment;
-import java_tutorial.parser.json.socket.ui.replymsg.ReplyTitle;
+import java_tutorial.parser.json.socket.ui.msg_reply.ReplyDepartment;
+import java_tutorial.parser.json.socket.ui.msg_send.MessengerDepartment;
 
 public class ReceiveDepartmentThread extends Thread {
 	private DepartmentFrameUI departmentUI;
@@ -26,20 +22,14 @@ public class ReceiveDepartmentThread extends Thread {
 	private DataInputStream in;
 	private DataOutputStream out;
 	
-	public void setSocket(Socket socket) {
-		try {
-			out = new DataOutputStream(socket.getOutputStream());
-			in = new DataInputStream(socket.getInputStream());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void setInOutStream(DataInputStream in, DataOutputStream out) {
+		this.in = in;
+		this.out = out;
 		
+		System.out.println("sendMessage Department - List");
 		sendMessage(out, null, DepartmentCRUD.DEPARTMENT_LIST);
+
 	}
-
-
 
 	@Override
 	public void run() {
@@ -51,13 +41,14 @@ public class ReceiveDepartmentThread extends Thread {
 		try {
 			while (true) {
 				msg = in.readUTF();
+				System.out.println(msg);
 				if (msg != null) {
 					System.out.println("receive message " + msg);
 					rep = gson.fromJson(msg, ReplyDepartment.class);
 					if (rep.getMsg()==DepartmentCRUD.DEPARTMENT_LIST) {
 						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Department>>() {}.getType());
 						if (departmentUI == null) {
-							departmentUI = new DepartmentFrameUI("流氓包府");
+							departmentUI = new DepartmentFrameUI("何辑包府");
 							departmentUI.setOut(out);
 							departmentUI.setTitleList(itemList);
 							departmentUI.setVisible(true);
@@ -84,7 +75,7 @@ public class ReceiveDepartmentThread extends Thread {
 
 	private void sendMessage(DataOutputStream out, Department department, DepartmentCRUD msg) {
 		Gson gson = new Gson();
-		MessengerDepartment messenger = new MessengerDepartment( department, msg);
+		MessengerDepartment messenger = new MessengerDepartment(department, msg);
 		String json = gson.toJson(messenger);
 		System.out.println("json" + json);
 		try {
@@ -93,5 +84,9 @@ public class ReceiveDepartmentThread extends Thread {
 			e1.printStackTrace();
 		}		
 	}
+
+
+
+
 	
 }

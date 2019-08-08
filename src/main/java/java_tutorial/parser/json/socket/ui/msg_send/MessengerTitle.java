@@ -1,4 +1,4 @@
-package java_tutorial.parser.json.socket.ui.msg;
+package java_tutorial.parser.json.socket.ui.msg_send;
 
 import java_tutorial.parser.json.socket.dto.Title;
 import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;

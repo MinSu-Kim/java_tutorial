@@ -1,7 +1,5 @@
 package java_tutorial.parser.json.socket.ui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,15 +8,16 @@ import java_tutorial.parser.json.socket.dao.DepartmentDao;
 import java_tutorial.parser.json.socket.dao.DepartmentDaoImpl;
 import java_tutorial.parser.json.socket.dao.TitleDao;
 import java_tutorial.parser.json.socket.dao.TitleDaoImpl;
-import java_tutorial.parser.json.socket.ui.thread.ServerDepartmentReceiver;
-import java_tutorial.parser.json.socket.ui.thread.ServerTitleReceiver;
+import java_tutorial.parser.json.socket.ui.thread_server.ServerProcessDeptThread;
+import java_tutorial.parser.json.socket.ui.thread_server.ServerProcessTitleThread;
 
 public class JsonServer {
 	public static final String HOST = "localhost";
-	public static final int PORT = 12345;
+	public static final int PORT_TITLE = 12345;
+	public static final int PORT_DEPARTMENT = 12346;
 	
-	private ServerSocket serverSocket;
-	private Socket socket;
+	private ServerSocket serverTitleSocket;
+	private ServerSocket serverDeptSocket;
 	private TitleDao titleDao;
 	private DepartmentDao deptDao;
 	
@@ -30,29 +29,55 @@ public class JsonServer {
 		titleDao = new TitleDaoImpl();
 		deptDao = new DepartmentDaoImpl();
 		
-		setupConnection();
 		
-		ServerTitleReceiver th = new ServerTitleReceiver(); // 상대로부터 메시지 수신을 위한 스레드 생성
-		th.setDao(titleDao);
-		th.setSocket(socket);
-		th.start();
+		new Thread(()->setupTitleConnection()).start();
+		new Thread(()->setupDeptConnection()).start();
 		
-		ServerDepartmentReceiver deptTh = new ServerDepartmentReceiver();
-		deptTh.setDao(deptDao);
-		deptTh.setSocket(socket);
-		deptTh.start();
 //		serverSocket.close();
 	}
 
-	private void setupConnection() {
+	private void setupTitleConnection() {
 		try {
-			serverSocket = new ServerSocket(PORT); // 서버 소켓 생성
-			System.out.println("Server Ready " + serverSocket);
-			socket = serverSocket.accept(); // 클라이언트로부터 연결 요청 대기
-			System.out.println("Client Request " + socket);
+			serverTitleSocket = new ServerSocket(PORT_TITLE); // 서버 소켓 생성
+			System.out.println("Server Ready " + serverTitleSocket);
+			while(true) {
+				Socket socket = serverTitleSocket.accept(); // 클라이언트로부터 연결 요청 대기
+				System.out.println("Client Request " + socket);
+				new ServerProcessTitleThread(socket, titleDao).start();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} // 클라이언트 소켓 생성
+		} finally {
+            try {
+                if( serverTitleSocket != null && !serverTitleSocket.isClosed() ) {
+                    serverTitleSocket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	
+	private void setupDeptConnection() {
+		try {
+			serverDeptSocket = new ServerSocket(PORT_DEPARTMENT); // 서버 소켓 생성
+			System.out.println("Server Ready " + serverDeptSocket);
+			while(true) {
+				Socket socket = serverDeptSocket.accept(); // 클라이언트로부터 연결 요청 대기
+				System.out.println("Client Request " + socket);
+				new ServerProcessDeptThread(socket, deptDao).start();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if( serverDeptSocket != null && !serverDeptSocket.isClosed() ) {
+                	serverDeptSocket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 
 }

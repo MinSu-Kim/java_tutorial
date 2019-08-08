@@ -19,7 +19,7 @@ import java_tutorial.parser.json.socket.dto.Title;
 import java_tutorial.parser.json.socket.ui.content.PanelTitle;
 import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
 import java_tutorial.parser.json.socket.ui.list.TitleList;
-import java_tutorial.parser.json.socket.ui.msg.MessengerTitle;
+import java_tutorial.parser.json.socket.ui.msg_send.MessengerTitle;
 
 @SuppressWarnings("serial")
 public class TitleFrameUI extends JFrame implements ActionListener {
@@ -121,21 +121,25 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		sendMessage(title, TitleCRUD.TITLE_UPDATE);
 		btnAdd.setText("추가");
 	}
-
+	
+	protected void actionPerformedBtnAdd(ActionEvent e) {
+		Title title = pContent.getItem();
+		sendMessage(title, TitleCRUD.TITLE_INSERT);
+	}
+	
+	protected void actionPerformedBtnCancel(ActionEvent e) {
+		clearContent();
+	}
+	
 	private void actionPerformedMntmUpdate(ActionEvent e) {
-		Title updateDept = pList.getSelectedItem();
-		pContent.setItem(updateDept);
+		Title updateTitle = pList.getSelectedItem();
+		pContent.setItem(updateTitle);
 		btnAdd.setText("수정");
 	}
 
 	private void actionPerformedMntmDelete(ActionEvent e) {
 		Title delDept = pList.getSelectedItem();
 		sendMessage(delDept, TitleCRUD.TITLE_DELETE);
-	}
-
-	protected void actionPerformedBtnAdd(ActionEvent e) {
-		Title title = pContent.getItem();
-		sendMessage(title, TitleCRUD.TITLE_INSERT);
 	}
 
 	private void sendMessage(Title title, TitleCRUD msg) {
@@ -149,9 +153,4 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 			e1.printStackTrace();
 		}
 	}
-
-	protected void actionPerformedBtnCancel(ActionEvent e) {
-		clearContent();
-	}
-
 }

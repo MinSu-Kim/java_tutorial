@@ -1,4 +1,4 @@
-package java_tutorial.parser.json.socket.ui.replymsg;
+package java_tutorial.parser.json.socket.ui.msg_reply;
 
 import java_tutorial.parser.json.socket.ui.enum_crud.DepartmentCRUD;
 

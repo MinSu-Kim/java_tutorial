@@ -1,10 +1,8 @@
-package java_tutorial.parser.json.socket.ui.thread;
+package java_tutorial.parser.json.socket.ui.thread_client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -15,8 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import java_tutorial.parser.json.socket.dto.Title;
 import java_tutorial.parser.json.socket.ui.TitleFrameUI;
 import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
-import java_tutorial.parser.json.socket.ui.msg.MessengerTitle;
-import java_tutorial.parser.json.socket.ui.replymsg.ReplyTitle;
+import java_tutorial.parser.json.socket.ui.msg_reply.ReplyTitle;
+import java_tutorial.parser.json.socket.ui.msg_send.MessengerTitle;
 
 public class ReceiveTitleThread extends Thread {
 	private TitleFrameUI titleFrame;
@@ -24,16 +22,11 @@ public class ReceiveTitleThread extends Thread {
 	private DataInputStream in;
 	private DataOutputStream out;
 	
-	public void setSocket(Socket socket) {
-		try {
-			out = new DataOutputStream(socket.getOutputStream());
-			in = new DataInputStream(socket.getInputStream());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void setInOutStream(DataInputStream in, DataOutputStream out) {
+		this.in = in;
+		this.out = out;
 		
+		System.out.println("sendMessage title - List");
 		sendMessage(out, null, TitleCRUD.TITLE_LIST);
 	}
 
