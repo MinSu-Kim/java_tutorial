@@ -17,6 +17,7 @@ import java_tutorial.parser.json.socket.ui.DepartmentFrameUI;
 import java_tutorial.parser.json.socket.ui.enum_crud.DepartmentCRUD;
 import java_tutorial.parser.json.socket.ui.enum_crud.TitleCRUD;
 import java_tutorial.parser.json.socket.ui.msg.MessengerDepartment;
+import java_tutorial.parser.json.socket.ui.replymsg.ReplyDepartment;
 import java_tutorial.parser.json.socket.ui.replymsg.ReplyTitle;
 
 public class ReceiveDepartmentThread extends Thread {
@@ -45,20 +46,21 @@ public class ReceiveDepartmentThread extends Thread {
 		System.out.println("receive");
 		Gson gson = new Gson();
 		String msg;
-		ReplyTitle rep;
+		ReplyDepartment rep;
 
 		try {
 			while (true) {
 				msg = in.readUTF();
 				if (msg != null) {
 					System.out.println("receive message " + msg);
-					rep = gson.fromJson(msg, ReplyTitle.class);
-					if (rep.getMsg()==TitleCRUD.TITLE_LIST) {
+					rep = gson.fromJson(msg, ReplyDepartment.class);
+					if (rep.getMsg()==DepartmentCRUD.DEPARTMENT_LIST) {
 						itemList = gson.fromJson(rep.getStrToJson(), new TypeToken<List<Department>>() {}.getType());
 						if (departmentUI == null) {
 							departmentUI = new DepartmentFrameUI("직책관리");
 							departmentUI.setOut(out);
 							departmentUI.setTitleList(itemList);
+							departmentUI.setVisible(true);
 						} else {
 							departmentUI.setTitleList(itemList);
 						}

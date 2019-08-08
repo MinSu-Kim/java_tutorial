@@ -9,17 +9,11 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import java_tutorial.parser.json.socket.dao.DepartmentDao;
-import java_tutorial.parser.json.socket.dao.DepartmentDaoImpl;
 import java_tutorial.parser.json.socket.dto.Department;
-import java_tutorial.parser.json.socket.dto.Title;
-import java_tutorial.parser.json.socket.ui.content.AbstractPanel;
 import java_tutorial.parser.json.socket.ui.content.PanelDepartment;
-import java_tutorial.parser.json.socket.ui.list.AbstractList;
 import java_tutorial.parser.json.socket.ui.list.DepartmentList;
 
 @SuppressWarnings("serial")
@@ -55,7 +49,7 @@ public class DepartmentFrameUI extends JFrame implements ActionListener {
 		getContentPane().add(pMain, BorderLayout.CENTER);
 		pMain.setLayout(new BorderLayout(0, 0));
 
-		pContent = new PanelDepartment("부서정보");
+		pContent = new PanelDepartment("부서관리");
 
 		pMain.add(pContent, BorderLayout.CENTER);
 
@@ -70,7 +64,7 @@ public class DepartmentFrameUI extends JFrame implements ActionListener {
 		btnCancel.addActionListener(this);
 		pBtns.add(btnCancel);
 
-		pList = new DepartmentList("부서 목록");
+		pList = new DepartmentList("부서목록");
 		getContentPane().add(pList, BorderLayout.SOUTH);
 
 		popupMenu = new JPopupMenu();
@@ -97,10 +91,10 @@ public class DepartmentFrameUI extends JFrame implements ActionListener {
 			actionPerformedBtnCancel(e);
 		}
 		if (e.getSource() == btnAdd) {
-			if (e.getActionCommand().equals("異뷂옙?")) {
+			if (e.getActionCommand().equals("추가")) {
 				actionPerformedBtnAdd(e);
 			}
-			if (e.getActionCommand().equals("?占쏙옙?占쏙옙")) {
+			if (e.getActionCommand().equals("수정")) {
 				actionPerformedBtnUpdate(e);
 			}
 		}
