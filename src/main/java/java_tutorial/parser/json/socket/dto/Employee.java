@@ -93,8 +93,8 @@ public class Employee {
 				eNo, 
 				eName,
 				String.format("%,d", salary),
-				String.format("%s(%sÏ∏?)", dno.getDeptName(), dno.getFloor()), 
-				gender ? "?Ç®?ûê" : "?ó¨?ûê",
+				String.format("%s(%s√˛)", dno.getDeptName(), dno.getFloor()), 
+				gender ? "≥≤" : "ø©",
 				String.format("%tF", joinDate),
 				String.format("%s(%d)", title.getTitleName(),title.getTitleCode()));
 	}
@@ -104,8 +104,8 @@ public class Employee {
 				String.format("E%06d", eNo), 
 				eName, 
 				String.format("%,d", salary),
-				String.format("%s(%sÏ∏?)", dno.getDeptName(), dno.getFloor()), 
-				gender ? "?Ç®?ûê" : "?ó¨?ûê",
+				String.format("%s(%s√˛)", dno.getDeptName(), dno.getFloor()), 
+				gender ? "≥≤" : "ø©",
 				String.format("%tF", joinDate),
 				String.format("%s(%d)", title.getTitleName(),title.getTitleCode()),
 		};

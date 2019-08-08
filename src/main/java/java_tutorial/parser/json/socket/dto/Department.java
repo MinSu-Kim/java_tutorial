@@ -45,7 +45,7 @@ public class Department {
 
 	@Override
 	public String toString() {
-		return String.format("%s(%sì¸?)", deptName, floor);
+		return String.format("%s(%sÃþ)", deptName, floor);
 	}
 
 	@Override

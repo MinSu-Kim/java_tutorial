@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import java_tutorial.parser.json.socket.ui.thread_client.ReceiveDepartmentThread;
+import java_tutorial.parser.json.socket.ui.thread_client.ReceiveEmployeeThread;
 import java_tutorial.parser.json.socket.ui.thread_client.ReceiveTitleThread;
 
 public class SplashScreenEx {
@@ -22,6 +23,7 @@ public class SplashScreenEx {
 
 	public SplashScreenEx() {
 		try {
+			//////////////////////////////////////////////////////////
 			Socket socketTitle = new Socket(JsonServer.HOST, JsonServer.PORT_TITLE);
 			System.out.println(socketTitle);
 			
@@ -32,16 +34,27 @@ public class SplashScreenEx {
 			receiveTitle.setInOutStream(in, out);
 			receiveTitle.start();
 			
-			
+			/////////////////////////////////////////////////////////////
 			Socket socketDept = new Socket(JsonServer.HOST, JsonServer.PORT_DEPARTMENT);
 			System.out.println(socketDept);
 			
-			DataOutputStream outd = new DataOutputStream(socketDept.getOutputStream());
-			DataInputStream ind = new DataInputStream(socketDept.getInputStream());
+			DataOutputStream outD = new DataOutputStream(socketDept.getOutputStream());
+			DataInputStream inD = new DataInputStream(socketDept.getInputStream());
 			
 			ReceiveDepartmentThread receiveDept = new ReceiveDepartmentThread();
-			receiveDept.setInOutStream(ind, outd);
+			receiveDept.setInOutStream(inD, outD);
 			receiveDept.start();
+			
+			///////////////////////////////////////////////////
+			Socket socketEmp = new Socket(JsonServer.HOST, JsonServer.PORT_EMPLOYEE);
+			System.out.println(socketEmp);
+			
+			DataOutputStream outE = new DataOutputStream(socketEmp.getOutputStream());
+			DataInputStream inE = new DataInputStream(socketEmp.getInputStream());
+			
+			ReceiveEmployeeThread receiveEmp = new ReceiveEmployeeThread();
+			receiveEmp.setInOutStream(inE, outE);
+			receiveEmp.start();
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

@@ -1,5 +1,6 @@
 package java_tutorial.parser.json.socket.ui.content;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import java_tutorial.parser.json.socket.dto.Department;
@@ -25,7 +27,7 @@ import java_tutorial.parser.json.socket.dto.Employee;
 import java_tutorial.parser.json.socket.dto.Title;
 
 @SuppressWarnings("serial")
-public class PanelEmployee extends AbstractPanel<Employee> {
+public class PanelEmployee extends JPanel {
 	private JTextField tfEmpNo;
 	private JTextField tfEmpName;
 	private JLabel lblSalary;
@@ -40,17 +42,16 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 	private JRadioButton rdbMale;
 	private JRadioButton rdbFeMale;
 	
-	public PanelEmployee() {
-		super("?Ç¨?õê");
+	public PanelEmployee(String title) {
+		initComponents(title);
 	}
 
-	@Override
 	protected void initComponents(String title) {
 		setSize(450, 300);
-		setBorder(new TitledBorder(null, title + " ?†ïÎ≥?", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\uC0AC\uC6D0\uC815\uBCF4", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new GridLayout(0, 2, 10, 10));
 
-		JLabel lblEmpNo = new JLabel("?Ç¨?õê Î≤àÌò∏");
+		JLabel lblEmpNo = new JLabel("\uC0AC\uC6D0 \uBC88\uD638");
 		lblEmpNo.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblEmpNo);
 
@@ -58,7 +59,7 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		add(tfEmpNo);
 		tfEmpNo.setColumns(10);
 
-		JLabel lblEmpName = new JLabel("?Ç¨?õêÎ™?");
+		JLabel lblEmpName = new JLabel("\uC0AC\uC6D0\uBA85");
 		lblEmpName.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblEmpName);
 
@@ -66,7 +67,7 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		tfEmpName.setColumns(10);
 		add(tfEmpName);
 		
-		lblSalary = new JLabel("Í∏âÏó¨");
+		lblSalary = new JLabel("\uAE09\uC5EC");
 		lblSalary.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblSalary);
 		
@@ -74,14 +75,14 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		spinSalary.setModel(new SpinnerNumberModel(1500000, 1000000, 5000000, 100000));
 		add(spinSalary);
 		
-		lblDno = new JLabel("Î∂??Ñú");
+		lblDno = new JLabel("\uBD80\uC11C");
 		lblDno.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblDno);
 		
 		cmbDno = new JComboBox<>();
 		add(cmbDno);
 		
-		lblGender = new JLabel("?Ñ±Î≥?");
+		lblGender = new JLabel("\uC131\uBCC4");
 		lblGender.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblGender);
 		
@@ -90,16 +91,16 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		pGender.setLayout(new BoxLayout(pGender, BoxLayout.X_AXIS));
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		rdbMale = new JRadioButton("?Ç®");
+		rdbMale = new JRadioButton("\uB0A8");
 		buttonGroup.add(rdbMale);
 		rdbMale.setSelected(true);
 		pGender.add(rdbMale);
 		
-		rdbFeMale = new JRadioButton("?ó¨");
+		rdbFeMale = new JRadioButton("\uC5EC");
 		buttonGroup.add(rdbFeMale);
 		pGender.add(rdbFeMale);
 		
-		lblJoin = new JLabel("?ûÖ?Ç¨?ùº");
+		lblJoin = new JLabel("\uC785\uC0AC\uC77C");
 		lblJoin.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblJoin);
 		
@@ -107,7 +108,7 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		tfJoin.setColumns(10);
 		add(tfJoin);
 		
-		lblTitle = new JLabel("ÏßÅÏ±Ö");
+		lblTitle = new JLabel("\uC9C1\uCC45");
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblTitle);
 		
@@ -127,7 +128,6 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		cmbDno.setSelectedIndex(-1);
 	}
 	
-	@Override
 	public void setItem(Employee item) {
 		tfEmpNo.setText(String.format("E%06d", item.geteNo()));
 		tfEmpName.setText(item.geteName());
@@ -143,7 +143,6 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		tfJoin.setText(String.format("%tF", item.getJoinDate()));
 	}
 
-	@Override
 	public Employee getItem() {
 		int eNo = Integer.parseInt(tfEmpNo.getText().trim().substring(1)); 
 		String eName = tfEmpName.getText().trim();
@@ -162,7 +161,6 @@ public class PanelEmployee extends AbstractPanel<Employee> {
 		return new Employee(eNo, eName, salary, dno, gender, joinDate, title);
 	}
 
-	@Override
 	public void clearComponent(int nextNo) {
 		tfEmpNo.setText(String.format("E%06d", nextNo));
 		tfEmpName.setText("");
