@@ -14,6 +14,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+@SuppressWarnings("serial")
 public class DynamicTree extends JPanel {
 	protected DefaultMutableTreeNode rootNode;
 	protected DefaultTreeModel treeModel;

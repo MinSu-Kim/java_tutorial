@@ -34,20 +34,7 @@ package java_tutorial.swing.component.spinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerListModel;
 
-/**
- * This 1.4 example is used by the various SpinnerDemos.
- * It implements a SpinnerListModel that works only with
- * an Object array and that implements cycling (the next
- * value and previous value are never null).  It also
- * lets you optionally associate a spinner model that's
- * linked to this one, so that when a cycle occurs the
- * linked spinner model is updated.
-
- * The SpinnerDemos use the CyclingSpinnerListModel for
- * a month spinner that (in SpinnerDemo3) is tied to the
- * year spinner, so that -- for example -- when the month
- * changes from December to January, the year increases.
- */
+@SuppressWarnings("serial")
 public class CyclingSpinnerListModel extends SpinnerListModel {
     Object firstValue, lastValue;
     SpinnerModel linkedModel = null;

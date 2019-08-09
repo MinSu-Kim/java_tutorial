@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+@SuppressWarnings("serial")
 public class DynamicTreeDemo extends JPanel implements ActionListener {
 	private int newNodeSuffix = 1;
 	private static String ADD_COMMAND = "add";

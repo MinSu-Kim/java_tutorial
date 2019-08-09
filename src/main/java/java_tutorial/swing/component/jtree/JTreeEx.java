@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -19,8 +17,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
 
+@SuppressWarnings("serial")
 public class JTreeEx extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
@@ -57,7 +55,6 @@ public class JTreeEx extends JFrame implements ActionListener {
 		initComponents();
 	}
 
-	@SuppressWarnings("serial")
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 527, 300);

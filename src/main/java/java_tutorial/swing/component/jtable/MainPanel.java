@@ -40,14 +40,14 @@ public final class MainPanel extends JPanel {
 	private final Object[] columnNames = { Status.INDETERMINATE, "Integer", "String" };
 	private final Object[][] data = { { true, 1, "BBB" }, { false, 12, "AAA" }, { true, 2, "DDD" }, { false, 5, "CCC" },
 			{ true, 3, "EEE" }, { false, 6, "GGG" }, { true, 4, "FFF" }, { false, 7, "HHH" } };
-	
+
 	private final TableModel model = new DefaultTableModel(data, columnNames) {
 		@Override
 		public Class<?> getColumnClass(int column) {
 			return getValueAt(0, column).getClass();
 		}
 	};
-	
+
 	private final JTable table = new JTable(model) {
 		protected static final int CHECKBOX_COLUMN = 0;
 		protected transient HeaderCheckBoxHandler handler;
