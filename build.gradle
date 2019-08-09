@@ -36,6 +36,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/jaxen/jaxen
 	compile group: 'jaxen', name: 'jaxen', version: '1.2.0'
 
+	//email 보내기
+	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+	compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+	// https://mvnrepository.com/artifact/javax.activation/activation
+	compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+
     testImplementation 'junit:junit:4.12'
 }
 jar {

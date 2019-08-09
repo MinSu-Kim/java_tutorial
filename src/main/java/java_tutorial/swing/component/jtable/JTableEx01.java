@@ -24,6 +24,7 @@ import javax.swing.table.TableRowSorter;
 @SuppressWarnings("serial")
 public class JTableEx01 extends JFrame {
 
+
 	private JPanel contentPane;
 	private JTable table;
 
@@ -66,15 +67,15 @@ public class JTableEx01 extends JFrame {
 	}
 
 	private Object[][] getDatas() {
-		return new Object[][] { { "ºí·¢¸®½ºÆ®", true, Color.DARK_GRAY, "bb", null },
-				{ "¸®½ºÆ®", false, Color.GRAY, "bb", null }, { "ºí·¢¸®½ºÆ®", true, Color.GREEN, "bb", null },
-				{ "¸®½ºÆ®", false, Color.RED, "bb", null }, { "ºí·¢¸®½ºÆ®", false, Color.BLUE, "bb", null },
-				{ "¸®½ºÆ®", true, Color.CYAN, "bb", null }, };
+		return new Object[][] { { "ë¸”ë™ë¦¬ìŠ¤íŠ¸", true, Color.DARK_GRAY, "bb", null },
+				{ "ë¦¬ìŠ¤íŠ¸", false, Color.GRAY, "bb", null }, { "ë¸”ë™ë¦¬ìŠ¤íŠ¸", true, Color.GREEN, "bb", null },
+				{ "ë¦¬ìŠ¤íŠ¸", false, Color.RED, "bb", null }, { "ë¸”ë™ë¦¬ìŠ¤íŠ¸", false, Color.BLUE, "bb", null },
+				{ "ë¦¬ìŠ¤íŠ¸", true, Color.CYAN, "bb", null }, };
 
 	}
 
 	private Object[] getColumnNames() {
-		return new Object[] { "¼¿»öÀû¿ë", "checkboxÇ¥½Ã", "¼¿¹è°æ»öÇ¥½Ã", "New column", "New column" };
+		return new Object[] { "ì…€ìƒ‰ì ìš©", "checkboxí‘œì‹œ", "ì…€ë°°ê²½ìƒ‰í‘œì‹œ", "New column", "New column" };
 	}
 
 	public void loadDatas() {
@@ -84,16 +85,16 @@ public class JTableEx01 extends JFrame {
 		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
 		table.setRowSorter(sorter);
 
-		setAlignWidth(); // table.setModel ´ÙÀ½¿¡ µ¥ÀÌÅÍ°¡ µé¾î¿À±â ¶§¹®¿¡ ±× ´ÙÀ½¿¡ setAlignWidth() È£ÃâÇØ¾ß ÇÔ.
+		setAlignWidth(); // table.setModel ë‹¤ìŒì— ë°ì´í„°ê°€ ë“¤ì–´ì˜¤ê¸° ë•Œë¬¸ì— ê·¸ ë‹¤ìŒì— setAlignWidth() í˜¸ì¶œí•´ì•¼ í•¨.
 	}
 
 	private void setAlignWidth() {
 //		tableCellAlignment(SwingConstants.CENTER, 0, 1, 2, 3, 4);
-		tableCellAlignment(JLabel.CENTER, 0, 1, 2, 3, 4);// ReturnTableCellRenderer jlabel»ó¼Ó
+		tableCellAlignment(JLabel.CENTER, 0, 1, 2, 3, 4);// ReturnTableCellRenderer jlabelìƒì†
 		tableSetWidth(120, 120, 80, 80, 80);
 	}
 
-	// Á¤·Ä
+	// ì •ë ¬
 	protected void tableCellAlignment(int align, int... idx) {
 		ReturnTableCellRenderer dtcr = new ReturnTableCellRenderer();
 		dtcr.setHorizontalAlignment(align);
@@ -104,7 +105,7 @@ public class JTableEx01 extends JFrame {
 		}
 	}
 
-	// ³Êºñ
+	// ë„ˆë¹„
 	protected void tableSetWidth(int... width) {
 		TableColumnModel tcm = table.getColumnModel();
 		tcm.getColumn(1).setCellRenderer(new SelectTableCellRenderer());
@@ -122,7 +123,7 @@ public class JTableEx01 extends JFrame {
 
 			setOpaque(true);
 
-			if (table.getValueAt(row, 0).toString().equals("ºí·¢¸®½ºÆ®")) {
+			if (table.getValueAt(row, 0).toString().equals("ë¸”ë™ë¦¬ìŠ¤íŠ¸")) {
 				setBackground(new Color(255, 0, 0, 40));
 			} else {
 				setBackground(Color.WHITE);
@@ -192,7 +193,7 @@ public class JTableEx01 extends JFrame {
 		}
 	}
 
-	// ³»ºÎÅ¬·¡½º
+	// ë‚´ë¶€í´ë˜ìŠ¤
 	private class MyTableModel extends DefaultTableModel {
 
 		public MyTableModel(Object[][] data, Object[] columnNames) {
@@ -200,7 +201,7 @@ public class JTableEx01 extends JFrame {
 		}
 
 		/**
-		 *  Å×ÀÌºí ¼¿³»¿ë ¼öÁ¤ ºÒ°¡´É
+		 *  í…Œì´ë¸” ì…€ë‚´ìš© ìˆ˜ì • ë¶ˆê°€ëŠ¥
 		 */
 		@Override
 		public boolean isCellEditable(int row, int column) {
