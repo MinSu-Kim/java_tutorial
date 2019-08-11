@@ -22,117 +22,181 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 @SuppressWarnings("serial")
+
 public class JTableEx01 extends JFrame {
 
 	private JPanel contentPane;
+
 	private JTable table;
 
 	public static void main(String[] args) {
+
 		EventQueue.invokeLater(new Runnable() {
+
 			public void run() {
+
 				try {
+
 					JTableEx01 frame = new JTableEx01();
+
 					frame.setVisible(true);
+
 				} catch (Exception e) {
+
 					e.printStackTrace();
+
 				}
+
 			}
+
 		});
+
 	}
 
 	public JTableEx01() {
+
 		initComponents();
+
 		table.getSelectionModel().setSelectionInterval(1, 1);
+
 	}
 
 	private void initComponents() {
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		setBounds(100, 100, 450, 300);
+
 		contentPane = new JPanel();
+
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
 		contentPane.setLayout(new BorderLayout(0, 0));
+
 		setContentPane(contentPane);
 
 		JScrollPane scrollPane = new JScrollPane();
+
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
+
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+
 		table.setFillsViewportHeight(true);
 
 		scrollPane.setViewportView(table);
 
 		loadDatas();
+
 	}
 
 	private Object[][] getDatas() {
-		return new Object[][] { { "ºí·¢¸®½ºÆ®", true, Color.DARK_GRAY, "bb", null },
-				{ "¸®½ºÆ®", false, Color.GRAY, "bb", null }, { "ºí·¢¸®½ºÆ®", true, Color.GREEN, "bb", null },
-				{ "¸®½ºÆ®", false, Color.RED, "bb", null }, { "ºí·¢¸®½ºÆ®", false, Color.BLUE, "bb", null },
-				{ "¸®½ºÆ®", true, Color.CYAN, "bb", null }, };
+
+		return new Object[][] { { "ë¸”ë™ë¦¬ìŠ¤íŠ¸", true, Color.DARK_GRAY, "bb", null },
+
+				{ "ë¦¬ìŠ¤íŠ¸", false, Color.GRAY, "bb", null }, { "ë¸”ë™ë¦¬ìŠ¤íŠ¸", true, Color.GREEN, "bb", null },
+
+				{ "ë¦¬ìŠ¤íŠ¸", false, Color.RED, "bb", null }, { "ë¸”ë™ë¦¬ìŠ¤íŠ¸", false, Color.BLUE, "bb", null },
+
+				{ "ë¦¬ìŠ¤íŠ¸", true, Color.CYAN, "bb", null }, };
 
 	}
 
 	private Object[] getColumnNames() {
-		return new Object[] { "¼¿»öÀû¿ë", "checkboxÇ¥½Ã", "¼¿¹è°æ»öÇ¥½Ã", "New column", "New column" };
+
+		return new Object[] { "ì…€ìƒ‰ì ìš©", "checkboxí‘œì‹œ", "ì…€ë°°ê²½ìƒ‰í‘œì‹œ", "New column", "New column" };
+
 	}
 
 	public void loadDatas() {
+
 		MyTableModel model = new MyTableModel(getDatas(), getColumnNames());
+
 		table.setModel(model);
 
 		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+
 		table.setRowSorter(sorter);
 
-		setAlignWidth(); // table.setModel ´ÙÀ½¿¡ µ¥ÀÌÅÍ°¡ µé¾î¿À±â ¶§¹®¿¡ ±× ´ÙÀ½¿¡ setAlignWidth() È£ÃâÇØ¾ß ÇÔ.
+		setAlignWidth(); // table.setModel ë‹¤ìŒì— ë°ì´í„°ê°€ ë“¤ì–´ì˜¤ê¸° ë•Œë¬¸ì— ê·¸ ë‹¤ìŒì— setAlignWidth() í˜¸ì¶œí•´ì•¼ í•¨.
+
 	}
 
 	private void setAlignWidth() {
+
 //		tableCellAlignment(SwingConstants.CENTER, 0, 1, 2, 3, 4);
-		tableCellAlignment(JLabel.CENTER, 0, 1, 2, 3, 4);// ReturnTableCellRenderer jlabel»ó¼Ó
+
+		tableCellAlignment(JLabel.CENTER, 0, 1, 2, 3, 4);// ReturnTableCellRenderer jlabelìƒì†
+
 		tableSetWidth(120, 120, 80, 80, 80);
+
 	}
 
-	// Á¤·Ä
+	// ì •ë ¬
+
 	protected void tableCellAlignment(int align, int... idx) {
+
 		ReturnTableCellRenderer dtcr = new ReturnTableCellRenderer();
+
 		dtcr.setHorizontalAlignment(align);
 
 		TableColumnModel tcm = table.getColumnModel();
+
 		for (int i = 0; i < idx.length; i++) {
+
 			tcm.getColumn(idx[i]).setCellRenderer(dtcr);
+
 		}
+
 	}
 
-	// ³Êºñ
+	// ë„ˆë¹„
+
 	protected void tableSetWidth(int... width) {
+
 		TableColumnModel tcm = table.getColumnModel();
+
 		tcm.getColumn(1).setCellRenderer(new SelectTableCellRenderer());
+
 		tcm.getColumn(2).setCellRenderer(new ColorRenderer());
-		
+
 		for (int i = 0; i < width.length; i++) {
+
 			tcm.getColumn(i).setPreferredWidth(width[i]);
+
 		}
+
 	}
 
 	private class ReturnTableCellRenderer extends JLabel implements TableCellRenderer {
+
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+
 				int row, int column) {
+
 			setText(value == null ? "" : value.toString());
 
 			setOpaque(true);
 
-			if (table.getValueAt(row, 0).toString().equals("ºí·¢¸®½ºÆ®")) {
+			if (table.getValueAt(row, 0).toString().equals("ë¸”ë™ë¦¬ìŠ¤íŠ¸")) {
+
 				setBackground(new Color(255, 0, 0, 40));
+
 			} else {
+
 				setBackground(Color.WHITE);
+
 			}
 
 			if (isSelected) {
+
 				setBackground(Color.LIGHT_GRAY);
+
 			}
 
 			return this;
+
 		}
 
 	}
@@ -140,83 +204,139 @@ public class JTableEx01 extends JFrame {
 	private class SelectTableCellRenderer extends JCheckBox implements TableCellRenderer {
 
 		@Override
+
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+
 				int row, int column) {
+
 			boolean boolWrapper = (Boolean) value;
+
 			setSelected(boolWrapper);
+
 			setHorizontalAlignment(CENTER);
+
 			if (isSelected) {
+
 				setBackground(Color.LIGHT_GRAY);
+
 			} else {
+
 				setBackground(Color.WHITE);
+
 			}
+
 			return this;
+
 		}
 
 	}
 
 	class ColorRenderer extends JLabel implements TableCellRenderer {
+
 		Border unselectedBorder = null;
+
 		Border selectedBorder = null;
+
 		boolean isBordered;
-		
+
 		public ColorRenderer() {
+
 			setOpaque(true); // MUST do this for background to show up.
+
 		}
-		
+
 		public ColorRenderer(boolean isBordered) {
+
 			this.isBordered = isBordered;
+
 			setOpaque(true); // MUST do this for background to show up.
+
 		}
 
 		public Component getTableCellRendererComponent(JTable table, Object color, boolean isSelected, boolean hasFocus,
+
 				int row, int column) {
+
 			Color newColor = (Color) color;
+
 			setBackground(newColor);
+
 //			if (isBordered) {
+
 //				if (isSelected) {
+
 //					if (selectedBorder == null) {
+
 //						selectedBorder = BorderFactory.createMatteBorder(2, 5, 2, 5, table.getSelectionBackground());
+
 //					}
+
 //					setBorder(selectedBorder);
+
 //				} else {
+
 //					if (unselectedBorder == null) {
+
 //						unselectedBorder = BorderFactory.createMatteBorder(2, 5, 2, 5, table.getBackground());
+
 //					}
+
 //					setBorder(unselectedBorder);
+
 //				}
+
 //			}
 
 			setToolTipText("RGB value: " + newColor.getRed() + ", " + newColor.getGreen() + ", " + newColor.getBlue());
+
 			return this;
+
 		}
+
 	}
 
-	// ³»ºÎÅ¬·¡½º
+	// ë‚´ë¶€í´ë˜ìŠ¤
+
 	private class MyTableModel extends DefaultTableModel {
 
 		public MyTableModel(Object[][] data, Object[] columnNames) {
+
 			super(data, columnNames);
+
 		}
 
 		/**
-		 *  Å×ÀÌºí ¼¿³»¿ë ¼öÁ¤ ºÒ°¡´É
+		 * 
+		 * í…Œì´ë¸” ì…€ë‚´ìš© ìˆ˜ì • ë¶ˆê°€ëŠ¥
+		 * 
 		 */
+
 		@Override
+
 		public boolean isCellEditable(int row, int column) {
+
 			return false;
+
 		}
 
 		public Class<?> getColumnClass(int column) {
+
 			Class<?> returnValue;
+
 			if ((column >= 0) && (column < getColumnCount()) && (getRowCount() > 0)) {
+
 				returnValue = getValueAt(0, column).getClass();
+
 			} else {
+
 				returnValue = Object.class;
+
 			}
+
 			return returnValue;
+
 		}
-		
+
 	}
 
 }
