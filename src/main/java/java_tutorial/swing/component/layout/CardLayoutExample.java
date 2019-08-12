@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class CardLayoutExample extends JFrame implements ActionListener {
 	CardLayout card;
 	JButton b1, b2, b3;

@@ -112,11 +112,12 @@ public class TableFilterDemo extends JPanel {
 
 	class MyTableModel extends AbstractTableModel {
 		private String[] columnNames = { "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" };
-		private Object[][] data = { { "Kathy", "Smith", "Snowboarding", new Integer(5), new Boolean(false) },
-				{ "John", "Doe", "Rowing", new Integer(3), new Boolean(true) },
-				{ "Sue", "Black", "Knitting", new Integer(2), new Boolean(false) },
-				{ "Jane", "White", "Speed reading", new Integer(20), new Boolean(true) },
-				{ "Joe", "Brown", "Pool", new Integer(10), new Boolean(false) } };
+		private Object[][] data = { 
+				{ "Kathy", "Smith", "Snowboarding", 5, false },
+				{ "John", "Doe", "Rowing", 3, true },
+				{ "Sue", "Black", "Knitting", 2, false },
+				{ "Jane", "White", "Speed reading", 20, true },
+				{ "Joe", "Brown", "Pool", 10, false } };
 
 		public int getColumnCount() {
 			return columnNames.length;
@@ -134,21 +135,12 @@ public class TableFilterDemo extends JPanel {
 			return data[row][col];
 		}
 
-		/*
-		 * JTable uses this method to determine the default renderer/ editor for each
-		 * cell. If we didn't implement this method, then the last column would contain
-		 * text ("true"/"false"), rather than a check box.
-		 */
 		public Class<?> getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 
-		/*
-		 * Don't need to implement this method unless your table's editable.
-		 */
+
 		public boolean isCellEditable(int row, int col) {
-			// Note that the data/cell address is constant,
-			// no matter where the cell appears onscreen.
 			if (col < 2) {
 				return false;
 			} else {

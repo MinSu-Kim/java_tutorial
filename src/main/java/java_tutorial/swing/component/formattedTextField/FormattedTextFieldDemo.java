@@ -58,22 +58,22 @@ public class FormattedTextFieldDemo extends JPanel implements PropertyChangeList
 
 		// Create the text fields and set them up.
 		amountField = new JFormattedTextField(amountFormat);
-		amountField.setValue(new Double(amount));
+		amountField.setValue(amount);
 		amountField.setColumns(10);
 		amountField.addPropertyChangeListener("value", this);
 
 		rateField = new JFormattedTextField(percentFormat);
-		rateField.setValue(new Double(rate));
+		rateField.setValue(rate);
 		rateField.setColumns(10);
 		rateField.addPropertyChangeListener("value", this);
 
 		numPeriodsField = new JFormattedTextField();
-		numPeriodsField.setValue(new Integer(numPeriods));
+		numPeriodsField.setValue(numPeriods);
 		numPeriodsField.setColumns(10);
 		numPeriodsField.addPropertyChangeListener("value", this);
 
 		paymentField = new JFormattedTextField(paymentFormat);
-		paymentField.setValue(new Double(payment));
+		paymentField.setValue(payment);
 		paymentField.setColumns(10);
 		paymentField.setEditable(false);
 		paymentField.setForeground(Color.red);
@@ -117,7 +117,7 @@ public class FormattedTextFieldDemo extends JPanel implements PropertyChangeList
 		}
 
 		double payment = computePayment(amount, rate, numPeriods);
-		paymentField.setValue(new Double(payment));
+		paymentField.setValue(payment);
 	}
 
 	private static void createAndShowGUI() {
