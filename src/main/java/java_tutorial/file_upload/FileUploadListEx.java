@@ -8,6 +8,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -390,6 +392,19 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 				lbl.setIcon(FileSystemView.getFileSystemView().getSystemIcon(f));
 			}
 			lbl.setText(fname.substring(fname.indexOf("_")+1));
+			lbl.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					JFileChooser f = new JFileChooser(System.getProperty("user.dir"));
+					int res = f.showSaveDialog(null);
+					File file = f.getSelectedFile();
+					if (res==JFileChooser.APPROVE_OPTION) {
+						System.out.println(file.getPath());
+					}
+				}
+				
+			});
 			pResult.add(lbl);
 			repaint();
 			revalidate();
@@ -399,7 +414,5 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 	
 	private boolean checkImageType(String fileName) {
 		return fileName.contains("jpg") || fileName.contains("gif") || fileName.contains("png") || fileName.contains("jpeg") ;
-//		String pattern = "jpg|gif|png|jpeg";
-//		return fileName.matches(pattern);
 	}
 }
