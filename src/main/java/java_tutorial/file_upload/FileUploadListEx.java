@@ -1,9 +1,12 @@
 package java_tutorial.file_upload;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -45,47 +48,35 @@ import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 
-import org.apache.tika.Tika;
 import org.imgscalr.Scalr;
-import java.awt.GridLayout;
 
-
-/**
- * @author mskim
- * java_tutorial.file_upload.FileDnDListHandlerEx 참조하여 최적화변경
- * jfilechooser에서 는 jlist로 drog and drop 적용되지 않으므로 추가 버튼으로 추가
- * 탐색기에서는 DnD 됨
- */
 @SuppressWarnings("serial")
 public class FileUploadListEx extends JFrame implements ActionListener {
-
+	private static final File UPLOAD_DIR = new File(System.getProperty("user.dir") + "\\upload\\");
 	private JPanel contentPane;
+	private JPanel pBottom;
+	private JPanel pResult;
+	private JPanel pNorth;
+	
+	private JLabel lbResult;
 	private JButton btnUpload;
 	private JButton btnFileChooser;
+	private JMenuItem mntmDel;
+	
 	private JList<File> list;
-	private JPanel pNorth;
-
-	private static final File UPLOAD_DIR = new File(System.getProperty("user.dir") + "\\upload\\");
 	private File[] selFiles;
 	private DefaultListModel<File> model;
-	
-	private JMenuItem mntmDel;
 	private List<String> uploadPathList;
-	private JPanel pBottom;
-	private JLabel lbResult;
-	private JPanel pResult;
-
+	
 	static {
-		if (!UPLOAD_DIR.exists())
-			UPLOAD_DIR.mkdir();
+		if (!UPLOAD_DIR.exists()) UPLOAD_DIR.mkdir();
 	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FileUploadListEx frame = new FileUploadListEx();
-					frame.setVisible(true);
+					new FileUploadListEx();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,6 +86,7 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 
 	public FileUploadListEx() {
 		initComponents();
+		setVisible(true);
 	}
 
 	private void initComponents() {
@@ -111,11 +103,11 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 
 		model = new DefaultListModel<File>();
 		list = new JList<>(model);
+		list.setFont(new Font("굴림", Font.PLAIN, 14));
 		list.setDragEnabled(true);
 		list.setTransferHandler(new ListTransferHandler(list));
 		list.setCellRenderer(new FileListCell());
 		list.setDropMode(DropMode.INSERT);
-
 		pCenter.add(list);
 
 		pNorth = new JPanel();
@@ -168,7 +160,7 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 
 	protected void actionPerformedBtnUpload(ActionEvent e) {
 		File[] selFiles = new File[model.getSize()];
-		for (int i = 0; i < selFiles.length; i++) {
+		for(int i=selFiles.length-1; i>=0; i--) {
 			selFiles[i] = model.get(i);
 		}
 		new UploadWorker(selFiles).execute();
@@ -179,11 +171,9 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 		for (int i = selIndexes.length - 1; i >= 0; i--) {
 			model.removeElementAt(selIndexes[i]);
 		}
-
 	}
 	
 	protected void actionPerformedBtnFileChooser(ActionEvent e) throws IOException {
-
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
 		fileChooser.setMultiSelectionEnabled(true);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -198,11 +188,10 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 				model.addElement(f);
 			}
 		}
-
 	}
 
 	private class UploadWorker extends SwingWorker<Void, String> {
-		File[] selectedFiles;
+		private File[] selectedFiles;
 		private List<String> uploadPathList;
 		
 		public UploadWorker(File[] selectedFiles) {
@@ -224,43 +213,24 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 				makeDir(UPLOAD_DIR, yearPath, monthPath, datePath);
 				
 				File target = new File(UPLOAD_DIR + datePath, File.separator + savedName);
-				
 				makeFile(file, target);
 				
-				String fileType = new Tika().detect(file);
-				String type = fileType.substring(fileType.lastIndexOf("/")+1);
-				
-				System.out.println("MediaUtils.getMediaType(type) " + MediaUtils.getMediaType(type));
-				
 				String uploadPath = null;
-				if (MediaUtils.getMediaType(type) != null) {
+				if (MediaUtils.checkImageType(file.getName())) {
 					uploadPath = makeThumbnale(UPLOAD_DIR, datePath, savedName, file);
 				}else {
 					uploadPath = (datePath + File.separator + savedName).replace(File.separatorChar, '/');
-				}
-				
+				}				
 				publish(uploadPath);
-				
+				uploadPathList.add(uploadPath);
 			}
 			return null;
 		}
 
-		private void makeFile(File srcFile, File destFile) throws IOException, FileNotFoundException {
-			
-			try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
-					BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFile));) {
-				
-				byte[] readBuffer = new byte[1024];
-				while (bis.read(readBuffer, 0, readBuffer.length) != -1) {
-					bos.write(readBuffer);
-				}
-			}
-		}
-
-		
 		@Override
 		protected void process(List<String> chunks) {
-			uploadPathList.add(chunks.get(0));
+			System.out.println("chunks" + chunks);
+//			uploadPathList.add(chunks.get(0));
 		}
 
 		@Override
@@ -271,22 +241,27 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 		}
 		
 		private String makeThumbnale(File uploadPath, String path, String fileName, File file) throws IOException /* throws IOException */ {
-						
 			BufferedImage sourceImg = ImageIO.read(file);
-			
 			BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC,  Scalr.Mode.FIT_TO_HEIGHT, 100);
-			
 			String thumbnailName = uploadPath + path + File.separator + "s_" + fileName;
-			
-			System.out.println("thumbnailName " + thumbnailName);
 			
 			File newFile = new File(thumbnailName);
 			String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
-			
 			ImageIO.write(destImg, formatName.toUpperCase(), newFile);
+			
 			return thumbnailName.substring(uploadPath.toPath().toString().length()).replace(File.separatorChar, '/');
 		}
 		
+		private void makeFile(File srcFile, File destFile) throws IOException, FileNotFoundException {
+			try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+					BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFile));) {
+				byte[] readBuffer = new byte[1024];
+				while (bis.read(readBuffer, 0, readBuffer.length) != -1) {
+					bos.write(readBuffer);
+				}
+			}
+		}
+
 		private void makeDir(File uploadPath, String...paths) {
 			if (new File(paths[paths.length-1]).exists())
 				return;
@@ -299,6 +274,7 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 		}
 	}
 
+	
 	private class ListTransferHandler extends TransferHandler {
 		private JList<File> list;
 
@@ -347,22 +323,28 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 			System.out.println(string);
 		}
 	}
-
+	
 
 	private class FileListCell extends DefaultListCellRenderer {
 
 		@SuppressWarnings("rawtypes")
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,	boolean cellHasFocus) {
 			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
 			if (c instanceof JLabel && value instanceof File) {
 				JLabel l = (JLabel) c;
 				File f = (File) value;
-				l.setIcon(FileSystemView.getFileSystemView().getSystemIcon(f));
-				l.setText(f.getName());
+				
 				try {
+					if (MediaUtils.checkImageType(f.getName())) {
+						l.setIcon( createImageIcon(f));
+					}else {
+						l.setIcon(FileSystemView.getFileSystemView().getSystemIcon(f));
+					}
+					
+					l.setText(f.getName());
+				
 					Path source = Paths.get(f.getPath());
 					l.setToolTipText(f.getAbsolutePath() + " type(" +Files.probeContentType(source)+")");
 				} catch (IOException e) {
@@ -374,33 +356,53 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 		}
 
 	}
+	
+
+	private ImageIcon createImageIcon(File file) throws IOException {
+		BufferedImage sourceImg = ImageIO.read(file);
+		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC,  Scalr.Mode.FIT_TO_HEIGHT, 30);
+		ImageIcon icon = new ImageIcon(destImg);
+		return icon;
+	}
 
 	public void setUploadPaths(List<String> uploadPaths) {
 		this.uploadPathList	 = 	uploadPaths;
 		System.out.println(uploadPathList);
 		
 		for(String subPath : uploadPathList) {
-			File f = new File(UPLOAD_DIR, subPath);
-			System.out.println(f.exists());
-			String fname = f.getName();
+			File file = new File(UPLOAD_DIR, subPath);
+			String fname = file.getName();
 			
 			JLabel lbl = new JLabel();
-			Path source = Paths.get(f.getAbsolutePath());
-			if (checkImageType(fname)) {
+			Path source = Paths.get(file.getAbsolutePath());
+			if (MediaUtils.checkImageType(fname)) {
 				lbl.setIcon( new ImageIcon(source.toAbsolutePath().toString()));
 			}else {
-				lbl.setIcon(FileSystemView.getFileSystemView().getSystemIcon(f));
+				lbl.setIcon(FileSystemView.getFileSystemView().getSystemIcon(file));
 			}
-			lbl.setText(fname.substring(fname.indexOf("_")+1));
 			lbl.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					lbl.setForeground(Color.RED);
+				}
 
 				@Override
+				public void mouseExited(MouseEvent e) {
+					lbl.setForeground(Color.BLACK);
+				}
+			});
+			lbl.setText(fname.substring(fname.lastIndexOf("_")+1));
+			lbl.setToolTipText(fname.substring(fname.indexOf("_")+1));
+			lbl.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
-					JFileChooser f = new JFileChooser(System.getProperty("user.dir"));
-					int res = f.showSaveDialog(null);
-					File file = f.getSelectedFile();
-					if (res==JFileChooser.APPROVE_OPTION) {
-						System.out.println(file.getPath());
+					if (e.getClickCount() == 2) {
+						JFileChooser f = new JFileChooser(System.getProperty("user.dir"));
+						int res = f.showSaveDialog(null);
+						File file = f.getSelectedFile();
+						if (res==JFileChooser.APPROVE_OPTION) {
+							new CreateFileWorker(subPath, file.getPath()).execute();
+						}
 					}
 				}
 				
@@ -412,7 +414,41 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 		
 	}
 	
-	private boolean checkImageType(String fileName) {
-		return fileName.contains("jpg") || fileName.contains("gif") || fileName.contains("png") || fileName.contains("jpeg") ;
+	public class CreateFileWorker extends SwingWorker<Void, Void>{
+		private File srcFile;
+		private File destFile;
+		
+		public CreateFileWorker(String src, String dest) {// /2019/08/18/s_18dd36cf-f526-4e21-ae2a-31b90f12b226_V001.png
+			String front = src.substring(0, 12);
+			String end = src.substring(14);
+			this.srcFile = new File(UPLOAD_DIR + front +end);
+			this.destFile= new File(dest);
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			makeFile();
+			return null;
+		}
+
+		@Override
+		protected void done() {
+			JOptionPane.showMessageDialog(null, "저장되었습니다");
+		}
+		
+		public void makeFile(){
+			try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+					BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFile));) {
+				byte[] readBuffer = new byte[1024];
+				while (bis.read(readBuffer, 0, readBuffer.length) != -1) {
+					bos.write(readBuffer);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	
+
+	
 }

@@ -25,6 +25,10 @@ public class MediaUtils {
 		return mediaMap.get(type.toUpperCase());
 	}
 	
+	public static boolean checkImageType(String fileName) {
+		return fileName.contains("jpg") || fileName.contains("gif") || fileName.contains("png") || fileName.contains("jpeg") ;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		
 		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
