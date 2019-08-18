@@ -407,6 +407,27 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 				}
 				
 			});
+			
+			JPopupMenu popupMenu = new JPopupMenu();
+			lbl.setComponentPopupMenu(popupMenu);
+
+			JMenuItem mntmDel = new JMenuItem("삭제");
+			mntmDel.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (MediaUtils.checkImageType(fname)) {
+						String front = subPath.substring(0, 12);
+						String end = subPath.substring(14);
+						new File(UPLOAD_DIR, front+end).delete();
+					}
+					new File(UPLOAD_DIR, subPath).delete();
+					pResult.remove(lbl);
+					pResult.repaint();
+					pResult.revalidate();
+				}
+			});
+			popupMenu.add(mntmDel);
+			
 			pResult.add(lbl);
 			repaint();
 			revalidate();
