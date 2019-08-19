@@ -230,7 +230,6 @@ public class FileUploadListEx extends JFrame implements ActionListener {
 		@Override
 		protected void process(List<String> chunks) {
 			System.out.println("chunks" + chunks);
-//			uploadPathList.add(chunks.get(0));
 		}
 
 		@Override
